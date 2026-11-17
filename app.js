@@ -372,26 +372,36 @@ const esCelular = () => /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
 async function compartir(doc, blob) {
   blob = blob || await PDF.crear(doc, E.cfg);
   const archivo = new File([blob], `${doc.numero}.pdf`, { type: "application/pdf" });
-  // 1) En el celular: menú de compartir del sistema (se elige WhatsApp y el contacto, y el PDF va adjunto)
-  if (esCelular() && navigator.canShare && navigator.canShare({ files: [archivo] })) {
+  const puede = !window.facturadorPC && !!(navigator.canShare && navigator.canShare({ files: [archivo] }));
+  let motivo = puede ? "" : "este navegador no deja adjuntar archivos";
+  // 1) En celular o tableta: menú de compartir del sistema (se elige WhatsApp y el contacto, y el PDF va adjunto)
+  if (puede && esCelular()) {
     try { await navigator.share({ files: [archivo], text: mensaje(doc) }); return; }
-    catch (e) { if (e.name === "AbortError") return; }   // la persona cerró el menú: no hacer nada más
+    catch (e) { if (e.name === "AbortError") return; motivo = e.name || "error"; }
   }
-  // 2) Si no se pudo (o es un computador): dos pasos claros con botones grandes
-  return envioEnDosPasos(doc, blob);
+  // 2) Si no se pudo (o es un computador): ventana con botones grandes
+  return envioEnDosPasos(doc, blob, archivo, puede, motivo);
 }
-function envioEnDosPasos(doc, blob) {
+function envioEnDosPasos(doc, blob, archivo, puede, motivo) {
   const tel = telefonoWA(doc.cliente.telefono);
   const enlace = `https://wa.me/${tel}?text=${encodeURIComponent(mensaje(doc))}`;
   const quien = tel ? `el chat de ${esc(doc.cliente.nombre)}` : "WhatsApp (ahí elige a quién enviarlo)";
-  const cuerpo = `<div class="pasos">
+  const directo = puede ? `<div class="paso-m"><span class="num">★</span><div><b>Lo más fácil:</b> toque este botón, elija <b>WhatsApp</b> y el contacto. El PDF va pegado.
+        <button class="btn verde" id="m-directo">Enviar el PDF por WhatsApp</button></div></div>
+      <p class="ayuda">Si eso no funciona, hágalo en dos pasos:</p>` : "";
+  const cuerpo = `<div class="pasos">${directo}
       <div class="paso-m"><span class="num">1</span><div>Guarde el PDF en este equipo.
-        <button class="btn primario" id="m-guardar">Guardar ${esc(doc.numero)}.pdf</button></div></div>
+        <button class="btn ${puede ? "" : "primario"}" id="m-guardar">Guardar ${esc(doc.numero)}.pdf</button></div></div>
       <div class="paso-m"><span class="num">2</span><div>Abra ${quien} con el mensaje ya escrito. En el chat toque el clip 📎 y elija el PDF${esCelular() ? "" : " (queda en la carpeta Descargas)"}.
-        <a class="btn verde" id="m-whatsapp" href="${enlace}" target="_blank" rel="noopener">Abrir WhatsApp</a></div></div>
+        <a class="btn ${puede ? "" : "verde"}" id="m-whatsapp" href="${enlace}" target="_blank" rel="noopener">Abrir WhatsApp</a></div></div>
+      ${motivo && esCelular() ? `<p class="ayuda nota-tec">Nota: ${esc(motivo)}.</p>` : ""}
     </div>`;
-  const abierto = Modal.abrir({ titulo: `Enviar ${NOMBRES[doc.tipo].toLowerCase()} ${doc.numero}`, texto: "Son dos pasos:", cuerpo,
-    botones: [{ texto: "Listo", valor: true }] });
+  const abierto = Modal.abrir({ titulo: `Enviar ${NOMBRES[doc.tipo].toLowerCase()} ${doc.numero}`, texto: puede ? "" : "Son dos pasos:", cuerpo,
+    botones: [{ texto: "Cerrar", valor: true }] });
+  if (puede) $("#m-directo").addEventListener("click", async () => {
+    try { await navigator.share({ files: [archivo], text: mensaje(doc) }); $("#m-acciones button").click(); }
+    catch (e) { if (e.name !== "AbortError") aviso("No se pudo así. Use los pasos 1 y 2 de abajo."); }
+  });
   $("#m-guardar").addEventListener("click", () => { descargar(blob, `${doc.numero}.pdf`); aviso("PDF guardado. Ahora toque «Abrir WhatsApp»."); });
   // En el programa de escritorio el enlace se abre por su puente (WhatsApp Web o la app de WhatsApp)
   $("#m-whatsapp").addEventListener("click", e => { if (window.facturadorPC) { e.preventDefault(); abrirEnlace(enlace); } });

@@ -1,6 +1,6 @@
 // Guarda la app en el equipo para que abra sin internet.
 // Cuando cambies cualquier archivo, sube el número de VERSION para que los equipos se actualicen.
-const VERSION = "facturador-v8-2";
+const VERSION = "facturador-v8-3";
 const ARCHIVOS = [
   "./", "./index.html", "./app.css", "./app.js", "./pdf.js", "./logo.png", "./manifest.webmanifest",
   "./lib/jspdf.umd.min.js", "./lib/jspdf.plugin.autotable.min.js",
