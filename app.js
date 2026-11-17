@@ -653,7 +653,7 @@ $("#instalar").addEventListener("click", async () => {
 });
 window.addEventListener("appinstalled", () => { $("#instalar").hidden = true; aviso("App instalada"); });
 if ("serviceWorker" in navigator && location.protocol !== "file:") {
-  window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+  window.addEventListener("load", () => navigator.serviceWorker.register("sw.js", { updateViaCache: "none" }).then(r => r.update()).catch(() => {}));
 }
 
 /* ======================= Pantalla de carga animada ======================= */

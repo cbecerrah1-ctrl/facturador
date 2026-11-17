@@ -1,6 +1,6 @@
 // Guarda la app en el equipo para que abra sin internet.
 // Cuando cambies cualquier archivo, sube el número de VERSION para que los equipos se actualicen.
-const VERSION = "facturador-v8-3";
+const VERSION = "facturador-v8-3b";
 const ARCHIVOS = [
   "./", "./index.html", "./app.css", "./app.js", "./pdf.js", "./logo.png", "./manifest.webmanifest",
   "./lib/jspdf.umd.min.js", "./lib/jspdf.plugin.autotable.min.js",
@@ -24,7 +24,7 @@ self.addEventListener("activate", e => {
 self.addEventListener("fetch", e => {
   if (e.request.method !== "GET" || new URL(e.request.url).origin !== location.origin) return;
   e.respondWith(
-    fetch(e.request)
+    fetch(e.request, { cache: "no-cache" })   // siempre pregunta a GitHub si hay algo nuevo
       .then(r => { const copia = r.clone(); caches.open(VERSION).then(c => c.put(e.request, copia)); return r; })
       .catch(() => caches.match(e.request, {ignoreSearch: true}))
   );
