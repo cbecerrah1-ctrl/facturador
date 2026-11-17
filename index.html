@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#3A167A">
+<meta name="description" content="Cotizaciones, facturas y cuentas de cobro de Versión 2.0 Aliado Automotriz">
+<title>Facturador Versión 2.0</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="iconos/icono-192.png">
+<link rel="apple-touch-icon" href="iconos/apple-touch-icon.png">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+
+<!-- ============ Pantalla de carga: el velocímetro sube hasta 2.0 ============ -->
+<div id="splash" aria-hidden="true">
+  <svg id="velocimetro" viewBox="0 0 300 350" role="img" aria-label="Versión 2.0 Aliado Automotriz"></svg>
+  <p class="saltar">Toca para entrar</p>
+</div>
+
+<div class="app">
+  <nav aria-label="Secciones">
+    <div class="marca"><img src="logo.png" alt="Versión 2.0 Aliado Automotriz"><span>Facturador</span></div>
+    <button data-vista="nuevo" aria-current="page"><span class="ico" aria-hidden="true">＋</span><span class="largo">Hacer documento</span><span class="corto">Hacer</span></button>
+    <button data-vista="historial"><span class="ico" aria-hidden="true">🗂</span><span class="largo">Documentos hechos</span><span class="corto">Hechos</span></button>
+    <button data-vista="inventario"><span class="ico" aria-hidden="true">🏷</span><span class="largo">Mis trabajos y precios</span><span class="corto">Precios</span></button>
+    <button data-vista="ajustes"><span class="ico" aria-hidden="true">⚙</span><span class="largo">Configuración</span><span class="corto">Ajustes</span></button>
+    <button id="instalar" class="instalar" hidden><span class="ico">⬇</span><span>Instalar app</span></button>
+  </nav>
+
+  <main>
+    <!-- ================= HACER DOCUMENTO ================= -->
+    <section id="v-nuevo" class="vista activa">
+      <h1>Hacer un documento</h1>
+      <p class="guia">Llene los pasos de arriba hacia abajo. Al final toque el botón morado.</p>
+      <div class="falta-negocio" id="falta-negocio" hidden>
+        <p><b>Antes de empezar:</b> llene los datos de su negocio (nombre, quién firma, celular). Así salen bien en los documentos.</p>
+        <button class="btn primario" id="ir-ajustes">Ir a Configuración</button>
+      </div>
+
+      <div class="trabajo">
+        <div class="pasos-col">
+          <section class="paso" aria-labelledby="p1">
+            <h2 id="p1"><span class="num">1</span>¿Qué va a hacer?</h2>
+            <div class="tipos" role="group" aria-label="Tipo de documento">
+              <button data-tipo="COTIZACION" aria-pressed="true"><b>Cotización</b><span>Precio de un trabajo que todavía no se ha hecho</span></button>
+              <button data-tipo="FACTURA" aria-pressed="false"><b>Factura</b><span>Cobro de un trabajo que ya se hizo</span></button>
+              <button data-tipo="CUENTA_COBRO" aria-pressed="false"><b>Cuenta de cobro</b><span>Cobro formal, casi siempre a empresas</span></button>
+            </div>
+          </section>
+
+          <section class="paso" aria-labelledby="p2">
+            <h2 id="p2"><span class="num">2</span>¿Para quién es?</h2>
+            <div class="rejilla">
+              <label class="ancho2 buscador">Nombre del cliente o empresa
+                <input id="c-nombre" autocomplete="off" placeholder="Si ya le hizo documentos, aparece al escribir">
+                <div class="sugerencias" id="sug-clientes" role="listbox"></div>
+              </label>
+              <label><span>Celular <small>(para WhatsApp)</small></span><input id="c-telefono" inputmode="tel" placeholder="300 123 4567"></label>
+              <label><span>Cédula o NIT <small>(si lo tiene)</small></span><input id="c-documento" autocomplete="off" inputmode="numeric"></label>
+              <label>Vehículo<input id="c-vehiculo" placeholder="Ejemplo: Chevrolet NHR"></label>
+              <label>Placa<input id="c-placa" class="mayus" autocomplete="off" placeholder="ABC123"></label>
+            </div>
+            <details class="mas" id="mas-datos">
+              <summary>Más datos del cliente <small>(dirección, correo, ciudad)</small></summary>
+              <div class="rejilla">
+                <label class="ancho2">Dirección<input id="c-direccion"></label>
+                <label>Correo<input id="c-correo" type="email" inputmode="email"></label>
+                <label>Ciudad<input id="c-ciudad"></label>
+              </div>
+            </details>
+          </section>
+
+          <section class="paso" aria-labelledby="p3">
+            <h2 id="p3"><span class="num">3</span>¿Qué trabajos hizo?</h2>
+            <p class="ayuda">Toque un trabajo de la lista para agregarlo. Si lo toca otra vez, suma uno más.</p>
+            <label class="buscar-trabajo">Buscar un trabajo
+              <input id="buscar-prod" type="search" autocomplete="off" placeholder="Escriba una palabra, por ejemplo: tapete">
+            </label>
+            <div class="sugerencias" id="sug-prod" role="listbox" hidden></div>
+            <div class="catalogo" id="catalogo" role="list"></div>
+
+            <h3 class="sub-titulo">Trabajos de este documento</h3>
+            <div id="items"></div>
+            <button class="btn" id="agregar-libre">＋ Escribir un trabajo que no está en la lista</button>
+
+            <div id="panel-cobro" class="cobro" hidden>
+              <label><span>¿Por qué se cobra? <small>(concepto)</small></span><input id="concepto" placeholder="Ejemplo: Tapetes de piso para camión Dongfeng"></label>
+              <label><span>Valor a cobrar <small>(solo si no agregó trabajos)</small></span><input id="valor" inputmode="numeric" placeholder="200.000"></label>
+            </div>
+          </section>
+        </div>
+
+        <aside class="recibo" aria-labelledby="p4">
+          <h2 id="p4"><span class="num">4</span>Revise y cree</h2>
+          <div class="hoja">
+            <header>
+              <img src="logo.png" alt="">
+              <div><div class="tipo-doc" id="r-tipo">Cotización</div><div class="sub" id="r-fecha"></div></div>
+            </header>
+            <div class="cliente"><b id="r-cliente">Consumidor final</b><span id="r-cliente2"></span></div>
+            <ul id="r-items"></ul>
+            <div class="total"><span>Total</span><output id="r-total">$0</output></div>
+            <div class="letras" id="r-letras"></div>
+          </div>
+          <button class="btn primario grande" id="generar">Crear la cotización</button>
+          <div class="aviso" id="aviso" role="alert"></div>
+          <div class="listo" id="listo" tabindex="-1">
+            <p class="listo-titulo"><span aria-hidden="true">✓</span> <span id="listo-texto"></span></p>
+            <button class="btn verde grande" id="l-compartir">Enviar por WhatsApp</button>
+            <div class="fila-acciones">
+              <button class="btn" id="l-ver">Ver el PDF</button>
+              <button class="btn" id="l-descargar">Guardar el PDF</button>
+            </div>
+            <button class="btn grande" id="l-nuevo">Hacer otro documento</button>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ================= DOCUMENTOS HECHOS ================= -->
+    <section id="v-historial" class="vista">
+      <h1>Documentos hechos</h1>
+      <p class="guia">Aquí están todos los documentos. Puede volver a enviarlos o pasar una cotización a factura.</p>
+      <div class="filtros">
+        <label>Buscar<input id="h-buscar" placeholder="Nombre del cliente, placa o número" type="search"></label>
+        <label>Mostrar
+          <select id="h-tipo">
+            <option value="">Todos los documentos</option><option value="COTIZACION">Solo cotizaciones</option>
+            <option value="FACTURA">Solo facturas</option><option value="CUENTA_COBRO">Solo cuentas de cobro</option>
+          </select>
+        </label>
+      </div>
+      <div id="h-lista" class="lista"></div>
+    </section>
+
+    <!-- ================= MIS TRABAJOS Y PRECIOS ================= -->
+    <section id="v-inventario" class="vista">
+      <h1>Mis trabajos y precios</h1>
+      <p class="guia">Estos son los trabajos que aparecen para tocar en el paso 3. Cambie los precios aquí y toque <b>Guardar cambios</b>.</p>
+      <div class="fila-acciones barra">
+        <button class="btn" id="i-agregar">＋ Agregar un trabajo nuevo</button>
+        <button class="btn primario" id="i-guardar">Guardar cambios</button>
+        <span class="cambios" id="i-cambios" role="status"></span>
+      </div>
+      <div id="i-lista"></div>
+    </section>
+
+    <!-- ================= CONFIGURACIÓN ================= -->
+    <section id="v-ajustes" class="vista">
+      <h1>Configuración</h1>
+
+      <div class="panel">
+        <h2>Tamaño de la letra</h2>
+        <p class="ayuda">Si le cuesta leer, agrande la letra. Se guarda en este equipo.</p>
+        <div class="tamanos" role="group" aria-label="Tamaño de la letra">
+          <button data-tam="normal" aria-pressed="true">A<span>Normal</span></button>
+          <button data-tam="grande" aria-pressed="false" class="t2">A<span>Grande</span></button>
+          <button data-tam="muy-grande" aria-pressed="false" class="t3">A<span>Muy grande</span></button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Datos de su negocio</h2>
+        <p class="ayuda">Así aparecen arriba y abajo en cada documento.</p>
+        <div class="rejilla" id="form-negocio">
+          <label class="ancho2">Nombre del negocio<input data-cfg="nombre"></label>
+          <label class="ancho2">Frase debajo del nombre<input data-cfg="eslogan"></label>
+          <label class="ancho2">Quién firma los documentos<input data-cfg="responsable"></label>
+          <label class="ancho2"><span>Cédula o NIT de quien firma <small>(puede dejarlo vacío)</small></span><input data-cfg="identificacion" placeholder="C.C. 1.234.567"></label>
+          <label class="ancho3">Dirección<input data-cfg="direccion"></label>
+          <label>Ciudad<input data-cfg="ciudad"></label>
+          <label class="ancho2">Celular del negocio<input data-cfg="telefono" inputmode="tel"></label>
+          <label class="ancho2">Cómo le pueden pagar<input data-cfg="datosPago" placeholder="Nequi o Daviplata 300 123 4567"></label>
+          <label class="ancho4">Nota de impuestos<input data-cfg="notaImpuestos"></label>
+          <label class="ancho4">Nota al final de la hoja<input data-cfg="notaPie"></label>
+          <label class="ancho2">Días que vale una cotización<input data-cfg="vigencia" inputmode="numeric"></label>
+        </div>
+        <button class="btn primario" id="guardar-cfg">Guardar datos del negocio</button>
+      </div>
+
+      <div class="panel">
+        <h2>Firma</h2>
+        <p class="ayuda">La firma sale encima de la línea en todos los documentos. Puede subir una foto de la firma hecha con lapicero en una hoja blanca, o dibujarla aquí con el dedo o el mouse.</p>
+        <div class="firma-zona">
+          <div class="firma-vista" id="firma-vista"><span id="firma-vacia">Todavía no hay firma</span><img id="firma-img" alt="Firma guardada" hidden></div>
+          <div class="fila-acciones">
+            <button class="btn" id="firma-subir">Subir foto de la firma</button>
+            <button class="btn" id="firma-dibujar">Dibujar la firma</button>
+            <button class="btn" id="firma-quitar" hidden>Quitar la firma</button>
+            <input type="file" id="firma-archivo" accept="image/*" hidden>
+          </div>
+          <div class="firma-pad" id="firma-pad" hidden>
+            <p class="ayuda">Firme dentro del recuadro blanco.</p>
+            <canvas id="firma-lienzo" width="900" height="300" aria-label="Espacio para dibujar la firma"></canvas>
+            <div class="fila-acciones">
+              <button class="btn" id="firma-borrar">Borrar y empezar de nuevo</button>
+              <button class="btn" id="firma-cancelar">Cancelar</button>
+              <button class="btn primario" id="firma-guardar">Usar esta firma</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Copia de seguridad</h2>
+        <p class="ayuda">Los datos se guardan solo en este equipo. Descargue una copia de vez en cuando, y úsela para pasar los trabajos y precios del computador al celular.</p>
+        <div class="fila-acciones">
+          <button class="btn" id="exportar">Descargar una copia</button>
+          <button class="btn" id="importar-inv">Cargar solo trabajos y precios</button>
+          <button class="btn" id="importar-todo">Cargar una copia completa</button>
+          <input type="file" id="archivo-copia" accept=".json,application/json" hidden>
+        </div>
+      </div>
+
+      <details class="panel avanzado">
+        <summary><h2>Numeración de los documentos <small>(avanzado)</small></h2></summary>
+        <p class="ayuda">Cada equipo lleva su propia numeración. Ponga una letra distinta en cada uno (por ejemplo A en el computador y B en el celular) para que nunca se repitan números: FV-A0001, FV-B0001.</p>
+        <div class="rejilla">
+          <label>Letra del equipo<input id="equipo" maxlength="3" class="mayus"></label>
+          <label>Próxima cotización<input id="sig-COT" inputmode="numeric"></label>
+          <label>Próxima factura<input id="sig-FV" inputmode="numeric"></label>
+          <label>Próxima cuenta de cobro<input id="sig-CC" inputmode="numeric"></label>
+        </div>
+        <button class="btn primario" id="guardar-equipo">Guardar numeración</button>
+      </details>
+    </section>
+  </main>
+</div>
+<div class="toast" id="toast" role="status"></div>
+<div class="modal" id="modal" hidden role="dialog" aria-modal="true" aria-labelledby="m-titulo">
+  <div class="caja">
+    <h2 id="m-titulo"></h2>
+    <p id="m-texto"></p>
+    <div id="m-cuerpo"></div>
+    <div class="fila-acciones" id="m-acciones"></div>
+  </div>
+</div>
+
+<script src="lib/jspdf.umd.min.js"></script>
+<script src="lib/jspdf.plugin.autotable.min.js"></script>
+<script src="pdf.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

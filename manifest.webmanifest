@@ -1,0 +1,17 @@
+{
+  "name": "Facturador Versión 2.0",
+  "short_name": "Facturador",
+  "description": "Cotizaciones, facturas y cuentas de cobro de Versión 2.0 Aliado Automotriz",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#FFFFFF",
+  "theme_color": "#3A167A",
+  "lang": "es-CO",
+  "icons": [
+    {"src": "iconos/icono-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "iconos/icono-512.png", "sizes": "512x512", "type": "image/png"},
+    {"src": "iconos/icono-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}
