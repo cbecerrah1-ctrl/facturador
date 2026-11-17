@@ -377,7 +377,7 @@ async function compartir(doc, blob) {
   // 1) En celular o tableta: menú de compartir del sistema (se elige WhatsApp y el contacto, y el PDF va adjunto)
   if (puede && esCelular()) {
     try { await navigator.share({ files: [archivo], text: mensaje(doc) }); return; }
-    catch (e) { if (e.name === "AbortError") return; motivo = e.name || "error"; }
+    catch (e) { if (e.name === "AbortError") return; motivo = `${e.name}: ${e.message}`; }
   }
   // 2) Si no se pudo (o es un computador): ventana con botones grandes
   return envioEnDosPasos(doc, blob, archivo, puede, motivo);
@@ -399,8 +399,14 @@ function envioEnDosPasos(doc, blob, archivo, puede, motivo) {
   const abierto = Modal.abrir({ titulo: `Enviar ${NOMBRES[doc.tipo].toLowerCase()} ${doc.numero}`, texto: puede ? "" : "Son dos pasos:", cuerpo,
     botones: [{ texto: "Cerrar", valor: true }] });
   if (puede) $("#m-directo").addEventListener("click", async () => {
-    try { await navigator.share({ files: [archivo], text: mensaje(doc) }); $("#m-acciones button").click(); }
-    catch (e) { if (e.name !== "AbortError") aviso("No se pudo así. Use los pasos 1 y 2 de abajo."); }
+    // Solo el archivo, sin texto: es lo que más tabletas y celulares aceptan
+    try { await navigator.share({ files: [archivo] }); $("#m-acciones button").click(); }
+    catch (e) {
+      if (e.name === "AbortError") return;
+      const nota = $(".nota-tec") || Object.assign(document.createElement("p"), { className: "ayuda nota-tec" });
+      nota.textContent = `Nota: ${motivo ? motivo + " / " : ""}${e.name}: ${e.message}`; $("#m-cuerpo .pasos").appendChild(nota);
+      aviso("No se pudo así. Use los pasos 1 y 2 de abajo.");
+    }
   });
   $("#m-guardar").addEventListener("click", () => { descargar(blob, `${doc.numero}.pdf`); aviso("PDF guardado. Ahora toque «Abrir WhatsApp»."); });
   // En el programa de escritorio el enlace se abre por su puente (WhatsApp Web o la app de WhatsApp)
