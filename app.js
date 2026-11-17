@@ -362,19 +362,36 @@ function mensaje(doc) {
   if (doc.tipo === "COTIZACION") t += " Si estás de acuerdo, respóndeme con el número para aprobarla.";
   return t;
 }
+/* ¿Es un celular o tableta? Ahí sí se usa el menú de compartir del sistema */
+const esCelular = () => !!(navigator.userAgentData && navigator.userAgentData.mobile) || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
 async function compartir(doc, blob) {
   blob = blob || await PDF.crear(doc, E.cfg);
   const archivo = new File([blob], `${doc.numero}.pdf`, { type: "application/pdf" });
-  // 1) Menú de compartir del sistema (Android, Windows, Mac): se elige WhatsApp y el contacto
-  if (navigator.canShare && navigator.canShare({ files: [archivo] })) {
-    try { await navigator.share({ files: [archivo], text: mensaje(doc), title: `${NOMBRES[doc.tipo]} ${doc.numero}` }); return; }
-    catch (e) { if (e.name === "AbortError") return; }
+  // 1) En el celular: menú de compartir del sistema (se elige WhatsApp y el contacto, y el PDF va adjunto)
+  if (esCelular() && navigator.canShare && navigator.canShare({ files: [archivo] })) {
+    try { await navigator.share({ files: [archivo], text: mensaje(doc) }); return; }
+    catch (e) { if (e.name === "AbortError") return; }   // la persona cerró el menú: no hacer nada más
   }
-  // 2) Plan B: descargar el PDF y abrir el chat del cliente con el mensaje escrito
-  descargar(blob, `${doc.numero}.pdf`);
+  // 2) Si no se pudo (o es un computador): dos pasos claros con botones grandes
+  return envioEnDosPasos(doc, blob);
+}
+function envioEnDosPasos(doc, blob) {
   const tel = telefonoWA(doc.cliente.telefono);
-  abrirEnlace(`https://wa.me/${tel}?text=${encodeURIComponent(mensaje(doc))}`);
-  aviso("Se guardó el PDF y se abrió WhatsApp. En el chat toque el clip 📎 y elija el PDF.");
+  const enlace = `https://wa.me/${tel}?text=${encodeURIComponent(mensaje(doc))}`;
+  const quien = tel ? `el chat de ${esc(doc.cliente.nombre)}` : "WhatsApp (ahí elige a quién enviarlo)";
+  const cuerpo = `<div class="pasos">
+      <div class="paso-m"><span class="num">1</span><div>Guarde el PDF en este equipo.
+        <button class="btn primario" id="m-guardar">Guardar ${esc(doc.numero)}.pdf</button></div></div>
+      <div class="paso-m"><span class="num">2</span><div>Abra ${quien} con el mensaje ya escrito. En el chat toque el clip 📎 y elija el PDF${esCelular() ? "" : " (queda en la carpeta Descargas)"}.
+        <a class="btn verde" id="m-whatsapp" href="${enlace}" target="_blank" rel="noopener">Abrir WhatsApp</a></div></div>
+    </div>`;
+  const abierto = Modal.abrir({ titulo: `Enviar ${NOMBRES[doc.tipo].toLowerCase()} ${doc.numero}`, texto: "Son dos pasos:", cuerpo,
+    botones: [{ texto: "Listo", valor: true }] });
+  $("#m-guardar").addEventListener("click", () => { descargar(blob, `${doc.numero}.pdf`); aviso("PDF guardado. Ahora toque «Abrir WhatsApp»."); });
+  // En el programa de escritorio el enlace se abre por su puente (WhatsApp Web o la app de WhatsApp)
+  $("#m-whatsapp").addEventListener("click", e => { if (window.facturadorPC) { e.preventDefault(); abrirEnlace(enlace); } });
+  return abierto;
 }
 /* En el programa de escritorio los enlaces se abren por su puente; en el navegador, en una pestaña nueva */
 function abrirEnlace(url) {
