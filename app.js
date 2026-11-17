@@ -363,7 +363,11 @@ function mensaje(doc) {
   return t;
 }
 /* ¿Es un celular o tableta? Ahí sí se usa el menú de compartir del sistema */
-const esCelular = () => !!(navigator.userAgentData && navigator.userAgentData.mobile) || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+/* Celulares y tabletas: Android, iPhone/iPad, o pantalla táctil que no sea Windows
+   (las tabletas Samsung y los iPad muchas veces se presentan como "computador") */
+const esCelular = () => /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
+  || !!(navigator.userAgentData && navigator.userAgentData.mobile)
+  || (navigator.maxTouchPoints > 1 && !/Windows/i.test(navigator.userAgent));
 
 async function compartir(doc, blob) {
   blob = blob || await PDF.crear(doc, E.cfg);

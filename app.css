@@ -136,16 +136,17 @@ input:focus,select:focus{border-color:var(--violeta-2);outline:none;box-shadow:0
 .catalogo .ya{font-size:.85rem;color:var(--ok);font-weight:600}
 .catalogo .sin{grid-column:1/-1;color:var(--gris);padding:.6rem 0}
 
-.item{display:grid;grid-template-columns:minmax(0,1fr) auto auto auto;grid-template-areas:"desc desc desc quitar" "cant precio sub sub";gap:.6rem .9rem;align-items:end;padding:.9rem;border:2px solid var(--linea);border-radius:12px;margin-bottom:.7rem;background:var(--fondo)}
+.item{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-areas:"desc desc" "cant precio" "quitar sub";gap:.7rem .9rem;align-items:end;padding:.9rem;border:2px solid var(--linea);border-radius:12px;margin-bottom:.7rem;background:var(--fondo)}
 .item .campo-desc{grid-area:desc}.item .campo-cant{grid-area:cant}.item .campo-precio{grid-area:precio}
 .item .subtotal{grid-area:sub;justify-self:end;text-align:right}
-.item .quitar{grid-area:quitar;align-self:start}
-.item .campo-precio input{text-align:right;max-width:11rem}
-.contador{display:flex;align-items:center;gap:.4rem}
-.contador button{all:unset;cursor:pointer;width:2.8rem;height:2.8rem;border-radius:50%;border:2px solid var(--linea);display:grid;place-items:center;font-size:1.5rem;font-weight:700;background:var(--papel);color:var(--acento)}
-.contador button:hover{border-color:var(--violeta-2)}
-.contador button:focus-visible{outline:3px solid var(--violeta-2)}
-.contador input{width:4.2rem;text-align:center;font-weight:700}
+.item .quitar{grid-area:quitar;justify-self:start;align-self:center}
+.item .campo-precio input{text-align:right;width:100%}
+.contador{display:inline-flex;align-items:stretch;border:2px solid var(--linea);border-radius:12px;overflow:hidden;background:var(--papel)}
+.contador button{all:unset;box-sizing:border-box;flex:0 0 3.2rem;width:3.2rem;min-height:3rem;cursor:pointer;display:grid;place-items:center;font-size:1.7rem;font-weight:700;line-height:1;background:var(--suave);color:var(--acento);user-select:none}
+.contador button:hover{background:var(--linea)}
+.contador button:active{transform:scale(.94)}
+.contador button:focus-visible{outline:3px solid var(--violeta-2);outline-offset:-3px}
+.contador input{flex:0 0 4rem;width:4rem;min-width:0;text-align:center;font-weight:700;font-size:1.15rem;border:0;border-left:2px solid var(--linea);border-right:2px solid var(--linea);border-radius:0;background:transparent}
 .subtotal small{display:block}
 .subtotal b{font-family:var(--cifras);font-size:1.4rem}
 #items:empty::before{content:"Todavía no ha agregado trabajos. Toque uno de la lista de arriba.";display:block;color:var(--gris);text-align:center;padding:1.1rem .6rem;border:2px dashed var(--linea);border-radius:12px;margin-bottom:.7rem}
@@ -269,3 +270,9 @@ input:focus,select:focus{border-color:var(--violeta-2);outline:none;box-shadow:0
   .toast{bottom:calc(5.6rem + env(safe-area-inset-bottom,0px))}
 }
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
+
+/* Si el espacio es angosto (letra muy grande o tableta vertical), cantidad y precio van uno debajo del otro */
+#items{container-type:inline-size}
+@container (max-width: 25rem){
+  .item{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"desc desc" "cant cant" "precio precio" "quitar sub"}
+}
