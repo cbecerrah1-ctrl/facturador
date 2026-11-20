@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#6C3BE4">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="VETEX">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>VETEX Dueño</title>
+<style>
+:root{--bg:#f4f2fb;--sf:#fff;--sf2:#f0edf9;--fg:#1c1830;--mu:#6b6684;--ln:#e4e0f2;--ac:#6C3BE4;--ac2:#8b67f0;--ac-s:#efe9ff;--ok:#16794a;--ok-s:#e3f6ec;--wa:#9a5b00;--wa-s:#fff3dc;--bad:#b42318;--bad-s:#fde8e6;--r:16px;--mono:ui-monospace,"SF Mono",Consolas,monospace}
+@media (prefers-color-scheme:dark){:root{--bg:#0f0d1a;--sf:#181528;--sf2:#211d35;--fg:#ece9f7;--mu:#a29dbb;--ln:#2c2745;--ac:#9b83ff;--ac2:#b8a6ff;--ac-s:#2a2250;--ok:#5fd39a;--ok-s:#123326;--wa:#f2b14c;--wa-s:#3a2a0e;--bad:#ff8a7e;--bad-s:#3b1714}}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+header{position:sticky;top:0;z-index:5;background:linear-gradient(135deg,#5b2fd0,#7b4cf0);color:#fff;padding:calc(14px + env(safe-area-inset-top)) 16px 14px}
+header .t{display:flex;align-items:center;gap:10px}
+header .logo{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.18);display:grid;place-items:center;font-weight:800}
+header h1{margin:0;font-size:18px;line-height:1.1}
+header .sub{font-size:12.5px;opacity:.85;margin-top:2px}
+header button{all:unset;margin-left:auto;cursor:pointer;width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,.16)}
+header button:active{transform:scale(.96)}
+header button.spin svg{animation:sp 1s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}
+.tabs{display:flex;gap:6px;margin-top:12px;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{all:unset;cursor:pointer;padding:7px 13px;border-radius:999px;font-size:13.5px;font-weight:600;background:rgba(255,255,255,.14);white-space:nowrap}
+.tabs button[aria-pressed=true]{background:#fff;color:#4b22c0}
+main{padding:14px 16px calc(28px + env(safe-area-inset-bottom));max-width:720px;margin:0 auto;display:grid;gap:12px}
+.card{background:var(--sf);border:1px solid var(--ln);border-radius:var(--r);padding:14px 16px}
+.card h2{margin:0 0 10px;font-size:14px;color:var(--mu);font-weight:600;letter-spacing:.02em;display:flex;align-items:center;gap:8px}
+.card h2 .r{margin-left:auto;font-weight:500}
+.hero{display:grid;gap:4px}
+.hero .big{font:700 34px/1.05 var(--mono);letter-spacing:-.02em}
+.hero .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:13.5px;color:var(--mu)}
+.chg{font-weight:700;padding:2px 8px;border-radius:999px;font-size:12.5px}
+.chg.up{background:var(--ok-s);color:var(--ok)}.chg.dn{background:var(--bad-s);color:var(--bad)}.chg.eq{background:var(--sf2);color:var(--mu)}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.kpi{background:var(--sf);border:1px solid var(--ln);border-radius:var(--r);padding:12px 14px}
+.kpi>span{display:block;font-size:12.5px;color:var(--mu)}
+.kpi b{display:block;font:700 20px/1.25 var(--mono);margin-top:2px}
+.kpi small{color:var(--mu);font-size:12px;display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+.list{display:grid}
+.li{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--ln);font-size:14px}
+.li:first-child{border-top:0;padding-top:2px}
+.li .n{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.li .n small{display:block;color:var(--mu);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.li .v{font:600 14px var(--mono);white-space:nowrap}
+.bar{height:6px;border-radius:3px;background:var(--sf2);overflow:hidden;margin-top:4px}.bar i{display:block;height:100%;background:var(--ac);border-radius:3px}
+.pill{font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.p-ok{background:var(--ok-s);color:var(--ok)}.p-wa{background:var(--wa-s);color:var(--wa)}.p-bad{background:var(--bad-s);color:var(--bad)}.p-ac{background:var(--ac-s);color:var(--ac)}
+.chart{display:flex;align-items:flex-end;gap:3px;height:120px;padding-top:6px}
+.chart div{flex:1;background:var(--ac);opacity:.75;border-radius:4px 4px 0 0;min-height:2px;position:relative}
+.chart div.today{opacity:1;background:var(--ac2)}
+.chart div.zero{background:var(--ln);opacity:1}
+.axis{display:flex;justify-content:space-between;font-size:11px;color:var(--mu);margin-top:6px}
+.seg{display:flex;gap:6px;margin-bottom:10px}.seg button{all:unset;cursor:pointer;padding:5px 11px;border-radius:999px;font-size:13px;font-weight:600;background:var(--sf2);color:var(--mu)}.seg button[aria-pressed=true]{background:var(--ac);color:#fff}
+.note{color:var(--mu);font-size:13px}
+.alert{border-radius:var(--r);padding:12px 14px;font-size:14px}
+.alert.wa{background:var(--wa-s);color:var(--wa)}.alert.bad{background:var(--bad-s);color:var(--bad)}
+.empty{color:var(--mu);font-size:13.5px;padding:6px 0}
+.center{min-height:70vh;display:grid;place-items:center;text-align:center;padding:24px}
+.center .box{max-width:360px;display:grid;gap:10px;justify-items:center}
+.btn{all:unset;cursor:pointer;background:var(--ac);color:#fff;font-weight:700;padding:12px 18px;border-radius:12px;text-align:center}
+.btn.sec{background:var(--sf2);color:var(--fg)}
+.install{display:flex;gap:10px;align-items:center}
+[hidden]{display:none!important}
+.sedes{display:flex;gap:6px;overflow-x:auto;padding:8px 16px 0;scrollbar-width:none}.sedes button{all:unset;cursor:pointer;white-space:nowrap;padding:6px 12px;border-radius:99px;font-size:13px;font-weight:600;background:rgba(255,255,255,.12);color:inherit}.sedes button[aria-pressed="true"]{background:#fff;color:#1B1035}
+.btnp{all:unset;cursor:pointer;display:block;text-align:center;background:#25D366;color:#fff;font-weight:700;padding:12px;border-radius:12px}
+</style>
+</head>
+<body>
+<header>
+  <div class="t"><div class="logo">V</div><div><h1 id="neg">VETEX</h1><div class="sub" id="upd">Cargando…</div></div>
+    <button id="ref" aria-label="Actualizar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.6-6.4"/><path d="M21 4v5h-5"/></svg></button></div>
+  <div class="sedes" id="sedes" hidden></div>
+  <nav class="tabs" id="tabs" hidden>
+    <button data-t="hoy" aria-pressed="true">Hoy</button><button data-t="alertas" id="tabAl" hidden>Alertas</button><button data-t="ventas">Ventas</button><button data-t="productos">Productos</button><button data-t="stock">Inventario</button><button data-t="cobrar">Por cobrar</button>
+  </nav>
+</header>
+<main id="app"><div class="center"><div class="box"><p class="note">Cargando…</p></div></div></main>
+
+<script>
+'use strict';
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const money=n=>'$'+Math.round(n||0).toLocaleString('es-CO');
+const moneyC=n=>{n=Math.round(n||0);return Math.abs(n)>=1e6?'$'+(n/1e6).toLocaleString('es-CO',{maximumFractionDigits:1})+' M':Math.abs(n)>=1e4?'$'+Math.round(n/1e3).toLocaleString('es-CO')+' mil':money(n)};
+const num=n=>(+n||0).toLocaleString('es-CO',{maximumFractionDigits:2});
+const KEY='vetex-dueno-v1';
+let CFG=null,D=null,TAB='hoy',SUB={prod:'hoy'},timer=null;
+/* Varias sedes: cada QR que escaneas agrega un local. SEL = clave elegida o 'todas' */
+let SEDES=[],SEL='',DS={};
+const guardarSedes=()=>{try{localStorage.setItem(KEY+'-sedes',JSON.stringify(SEDES));localStorage.setItem(KEY+'-sel',SEL)}catch{}};
+/* El enlace del QR trae la clave y el código: se guardan en el celular y se borran de la barra de direcciones */
+function leerEnlace(){
+  try{SEDES=JSON.parse(localStorage.getItem(KEY+'-sedes')||'[]')}catch{SEDES=[]}
+  if(!SEDES.length){try{const v=JSON.parse(localStorage.getItem(KEY)||'null');if(v&&v.c)SEDES=[v]}catch{}}
+  try{SEL=localStorage.getItem(KEY+'-sel')||''}catch{}
+  const h=new URLSearchParams(location.hash.slice(1));
+  if(h.get('c')&&h.get('t')){const n={c:h.get('c'),t:h.get('t')};SEDES=[...SEDES.filter(x=>x.c!==n.c),n];SEL=n.c;history.replaceState(null,'',location.pathname)}
+  if(!SEDES.some(x=>x.c===SEL)&&SEL!=='todas')SEL=SEDES[0]?SEDES[0].c:'';
+  CFG=SEDES.find(x=>x.c===SEL)||SEDES[0]||null;guardarSedes();
+  try{if(CFG)localStorage.setItem(KEY,JSON.stringify(CFG))}catch{}
+}
+/* Descifrado (mismo formato que VETEX: "VXB1" + IV + AES-GCM sobre JSON comprimido) */
+async function llave(clave){const base=await crypto.subtle.importKey('raw',new TextEncoder().encode(clave),'PBKDF2',false,['deriveKey']);
+  return crypto.subtle.deriveKey({name:'PBKDF2',salt:new TextEncoder().encode('VETEX-respaldo-v1|'+clave),iterations:150000,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['decrypt'])}
+const _ks={};
+async function descifrar(b64,clave){clave=clave||CFG.c;const u=Uint8Array.from(atob(b64),c=>c.charCodeAt(0));
+  if(new TextDecoder().decode(u.slice(0,4))!=='VXB1')throw new Error('formato');
+  const _k=_ks[clave]=_ks[clave]||await llave(clave);
+  const gz=new Uint8Array(await crypto.subtle.decrypt({name:'AES-GCM',iv:u.slice(4,16)},_k,u.slice(16)));
+  return JSON.parse(await new Response(new Blob([gz]).stream().pipeThrough(new DecompressionStream('gzip'))).text())}
+
+async function leerSede(x){
+  const r=await fetch('/api/dueno',{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({accion:'leer',clave:x.c,token:x.t}),cache:'no-store'});
+  const j=await r.json();if(!j.ok)return{error:j};const d=await descifrar(j.datos,x.c);x.n=d.negocio||x.n;try{localStorage.setItem(KEY+'-cache-'+x.c,JSON.stringify(d))}catch{}return{d}}
+function pintaSedes(){const el=$('#sedes');if(SEDES.length<2){el.hidden=true;return}el.hidden=false;
+  el.innerHTML=[['todas','Todas las sedes'],...SEDES.map(x=>[x.c,x.n||x.c.slice(4,13)])].map(([k,t])=>`<button data-s="${esc(k)}" aria-pressed="${SEL===k}">${esc(t)}</button>`).join('')}
+async function cargarTodas(){
+  $('#ref').classList.add('spin');DS={};
+  await Promise.all(SEDES.map(async x=>{try{const r=await leerSede(x);if(r.d)DS[x.c]=r.d}catch{try{const c=JSON.parse(localStorage.getItem(KEY+'-cache-'+x.c)||'null');if(c)DS[x.c]=c}catch{}}}));
+  guardarSedes();$('#ref').classList.remove('spin');pintaSedes();
+  if(!Object.keys(DS).length)return pantalla('Sin conexión','Revisa el internet del celular y toca actualizar.');renderTodas()}
+async function cargar(){
+  if(SEL==='todas'&&SEDES.length>1)return cargarTodas();
+  pintaSedes();
+  if(!CFG){pantalla('Conecta tu negocio','En el computador del negocio abre VETEX, toca <b>Licencia</b> (abajo a la izquierda) → <b>Conectar celular del dueño</b> y escanea el código QR con la cámara de este celular.');return}
+  $('#ref').classList.add('spin');
+  try{
+    const r=await fetch('/api/dueno',{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({accion:'leer',clave:CFG.c,token:CFG.t}),cache:'no-store'});
+    const j=await r.json();
+    if(!j.ok){if(j.motivo==='desvinculado'||j.motivo==='no_existe'){try{localStorage.removeItem(KEY)}catch{}CFG=null}pantalla('No se pudo abrir',esc(j.mensaje||'Intenta de nuevo.'));return}
+    D=await descifrar(j.datos);CFG.n=D.negocio||CFG.n;guardarSedes();pintaSedes();try{localStorage.setItem(KEY+'-cache',JSON.stringify(D))}catch{}
+    render();
+  }catch(e){
+    if(!D){try{D=JSON.parse(localStorage.getItem(KEY+'-cache')||'null')}catch{}}
+    if(D){render();$('#upd').textContent='Sin conexión · mostrando lo último guardado'}
+    else pantalla('Sin conexión','Revisa el internet del celular y toca actualizar.');
+  }finally{$('#ref').classList.remove('spin')}
+}
+function pantalla(t,msg){$('#tabs').hidden=true;$('#upd').textContent='';$('#app').innerHTML=`<div class="center"><div class="box"><h2 style="margin:0">${t}</h2><p class="note" style="font-size:15px">${msg}</p></div></div>`}
+
+const hace=iso=>{const m=Math.round((Date.now()-new Date(iso))/60000);return m<1?'hace un momento':m<60?`hace ${m} min`:m<1440?`hace ${Math.round(m/60)} h`:new Date(iso).toLocaleDateString('es-CO',{day:'numeric',month:'short'})};
+const chg=(a,b)=>{if(!b)return a?'<span class="chg up">nuevo</span>':'';const p=Math.round((a-b)/b*100);return`<span class="chg ${p>0?'up':p<0?'dn':'eq'}">${p>0?'▲':p<0?'▼':''} ${Math.abs(p)}%</span>`};
+const card=(t,body,r='')=>`<section class="card"><h2>${t}${r?`<span class="r">${r}</span>`:''}</h2>${body}</section>`;
+const lista=(rows,empty)=>rows.length?`<div class="list">${rows.join('')}</div>`:`<p class="empty">${empty}</p>`;
+
+/* Vista de todas las sedes juntas */
+function renderTodas(){
+  $('#tabs').hidden=true;$('#neg').textContent='Todas tus sedes';const L=SEDES.filter(x=>DS[x.c]).map(x=>({x,d:DS[x.c]}));
+  const sum=f=>L.reduce((s,o)=>s+(f(o.d)||0),0),viejo=Math.min(...L.map(o=>new Date(o.d.generado).getTime()));
+  $('#upd').textContent=`${L.length} ${L.length===1?'sede':'sedes'} · actualizado ${hace(new Date(viejo).toISOString())}`;
+  const mx=Math.max(1,...L.map(o=>o.d.hoy.total)),al=L.flatMap(o=>(o.d.alertas||[]).filter(a=>a.nivel!=='info').map(a=>({...a,sede:o.d.negocio})));
+  $('#app').innerHTML=`<section class="card hero"><h2>Ventas de hoy · todas</h2><div class="big">${money(sum(d=>d.hoy.total))}</div><div class="row">${chg(sum(d=>d.hoy.total),sum(d=>(d.ayer||{}).totalHora??(d.ayer||{}).total))}<span>vs. ayer a esta hora</span></div></section>
+    <div class="kpis"><div class="kpi"><span>Ganancia hoy</span><b>${money(sum(d=>d.hoy.ganancia))}</b></div><div class="kpi"><span>Ventas hoy</span><b>${num(sum(d=>d.hoy.ventas))}</b></div>
+    <div class="kpi"><span>Este mes</span><b>${moneyC(sum(d=>(d.mes||{}).total))}</b><small>Ganancia ${moneyC(sum(d=>(d.mes||{}).ganancia))}</small></div><div class="kpi"><span>Te deben</span><b>${moneyC(sum(d=>(d.cobrar||{}).total))}</b></div></div>
+    ${card('Cada sede hoy',lista(L.sort((a,b)=>b.d.hoy.total-a.d.hoy.total).map(o=>`<button class="li" data-ir="${esc(o.x.c)}" style="all:unset;display:flex;cursor:pointer;width:100%;gap:10px;align-items:center;padding:10px 0;border-top:1px solid var(--ln)"><div class="n">${esc(o.d.negocio)}<small>${num(o.d.hoy.ventas)} ventas · ganancia ${moneyC(o.d.hoy.ganancia)}${o.d.caja&&o.d.caja.abierta?' · caja '+(o.d.caja.cerrada?'cerrada':'abierta'):''}</small><div class="bar"><i style="width:${o.d.hoy.total/mx*100}%"></i></div></div><div class="v">${money(o.d.hoy.total)}</div></button>`),'Sin datos.'))}
+    ${al.length?card('Alertas',lista(al.slice(0,12).map(a=>`<div class="li"><div class="n">${a.nivel==='alta'?'⛔':'⚠️'} ${esc(a.titulo)}<small>${esc(a.sede)} · ${esc(a.detalle)}</small></div></div>`),'')):''}
+    ${card('Para pedir en todas las sedes',lista(L.map(o=>`<div class="li"><div class="n">${esc(o.d.negocio)}</div><span class="pill p-bad">${num((o.d.stock||{}).agotados)} agotados</span> <span class="pill p-wa">${num((o.d.stock||{}).bajos)} bajos</span></div>`),''))}`;
+  document.querySelectorAll('[data-ir]').forEach(b=>b.onclick=()=>{SEL=b.dataset.ir;CFG=SEDES.find(x=>x.c===SEL);guardarSedes();D=DS[SEL]||null;if(D){pintaSedes();render()}cargar()})}
+function render(){
+  $('#tabs').hidden=false;$('#neg').textContent=D.negocio||'VETEX';$('#tabAl').hidden=!D.alertas;
+  if(D.alertas){const n=D.alertas.filter(a=>a.nivel!=='info').length;$('#tabAl').textContent=n?`Alertas (${n})`:'Alertas'}
+  const vieja=Date.now()-new Date(D.generado)>45*60000;
+  $('#upd').textContent='Actualizado '+hace(D.generado);
+  const aviso=vieja?`<div class="alert wa">VETEX no envía datos desde ${hace(D.generado)}. Puede que el computador del negocio esté apagado o sin internet.</div>`:'';
+  const ro=D.licencia&&D.licencia.aviso?`<div class="alert ${D.licencia.ro?'bad':'wa'}">${esc(D.licencia.aviso)}</div>`:'';
+  if(TAB==='alertas'&&!D.alertas)TAB='hoy';
+  $('#app').innerHTML=aviso+ro+({hoy,alertas,ventas,productos,stock,cobrar}[TAB])();
+  const sh=$('#shareRes');if(sh)sh.onclick=async()=>{const t=D.resumen||'';try{if(navigator.share){await navigator.share({text:t});return}}catch(e){if(e&&e.name==='AbortError')return}location.href='https://wa.me/?text='+encodeURIComponent(t)};
+  document.querySelectorAll('[data-sp]').forEach(b=>b.onclick=()=>{SUB.prod=b.dataset.sp;render()});
+}
+function hoy(){
+  const h=D.hoy,a=D.ayer||{total:0};
+  const met=Object.entries(h.metodos||{}).sort((x,y)=>y[1].v-x[1].v);
+  const mx=Math.max(1,...met.map(([,m])=>m.v));
+  const al=(D.alertas||[]).filter(a=>a.nivel==='alta');
+  return (al.length?`<button class="alert bad" style="all:unset;display:block;cursor:pointer;margin:0 0 12px;padding:12px 14px;border-radius:14px;background:#FDECEC;color:#8A1C1C;font-weight:600" onclick="TAB='alertas';document.querySelectorAll('#tabs button').forEach(x=>x.setAttribute('aria-pressed',x.dataset.t==='alertas'));render()">⛔ ${al.length===1?esc(al[0].titulo):al.length+' alertas importantes'} · ver →</button>`:'')+`<section class="card hero"><h2>Ventas de hoy</h2><div class="big">${money(h.total)}</div><div class="row">${chg(h.total,a.totalHora??a.total)}<span>vs. ayer a esta hora (${moneyC(a.totalHora??a.total)})</span></div></section>
+  <div class="kpis">
+    <div class="kpi"><span>Ganancia</span><b>${money(h.ganancia)}</b><small>${h.total?Math.round(h.ganancia/h.total*100):0}% de margen</small></div>
+    <div class="kpi"><span>Ventas</span><b>${num(h.ventas)}</b><small>Promedio ${moneyC(h.ventas?h.total/h.ventas:0)}</small></div>
+    <div class="kpi"><span>Efectivo en caja</span><b>${D.caja&&D.caja.abierta?money(D.caja.esperado):'—'}</b><small>${D.caja?D.caja.abierta?(D.caja.cerrada?'Caja cerrada':'Base '+moneyC(D.caja.base)):'Caja sin abrir':''}</small></div>
+    <div class="kpi"><span>Devoluciones</span><b>${money(h.dev)}</b><small>${D.mes?'Mes: '+moneyC(D.mes.total):''}</small></div>
+  </div>
+  ${card('Cómo pagaron',lista(met.map(([k,m])=>`<div class="li"><div class="n">${esc(k)}${m.a?`<small>+ ${money(m.a)} en abonos</small>`:''}<div class="bar"><i style="width:${m.v/mx*100}%"></i></div></div><div class="v">${money(m.v)}</div></div>`),'Todavía no hay ventas hoy.'))}
+  ${card('Vendedores hoy',lista((h.vendedores||[]).sort((x,y)=>y.total-x.total).map(v=>`<div class="li"><div class="n">${esc(v.n)}<small>${v.ventas} ${v.ventas===1?'venta':'ventas'}</small></div><div class="v">${money(v.total)}</div></div>`),'Sin ventas todavía.'))}
+  ${card('Últimas ventas',lista((D.ultimas||[]).map(v=>`<div class="li"><div class="n">N.º ${esc(String(v.n).padStart(5,'0'))} · ${esc(v.h)}<small>${esc([v.v,v.c,v.m].filter(Boolean).join(' · '))}</small></div><div class="v">${money(v.t)}</div></div>`),'Sin ventas todavía.'))}`;
+}
+function alertas(){const L=D.alertas||[],ic={alta:'⛔',media:'⚠️',info:'ℹ️'};
+  return card('Lo que merece tu atención',lista(L.map(a=>`<div class="li"><div class="n">${ic[a.nivel]||''} <b>${esc(a.titulo)}</b><small>${esc(a.detalle)}</small></div></div>`),'Todo en orden en el negocio. 👍'))+
+    (D.resumen?card('Resumen del día',`<pre style="white-space:pre-wrap;font:14px/1.5 inherit;margin:0">${esc(D.resumen).replace(/\*([^*\n]+)\*/g,'<b>$1</b>').replace(/_([^_\n]+)_/g,'<i>$1</i>')}</pre><button id="shareRes" class="btnp" style="margin-top:12px">Compartir por WhatsApp</button>`):'')}
+function ventas(){
+  const s=D.serie||[],mx=Math.max(1,...s.map(x=>x.t)),tot=s.reduce((a,x)=>a+x.t,0),dias=s.filter(x=>x.t>0).length;
+  const sem=D.semana||{},mes=D.mes||{};
+  return `<div class="kpis">
+    <div class="kpi"><span>Esta semana</span><b>${moneyC(sem.total)}</b><small>${chg(sem.total,sem.anterior)} vs. semana pasada</small></div>
+    <div class="kpi"><span>Este mes</span><b>${moneyC(mes.total)}</b><small>Ganancia ${moneyC(mes.ganancia)}</small></div>
+    <div class="kpi"><span>Mes pasado</span><b>${moneyC(mes.anterior)}</b><small>${chg(mes.total,mes.anteriorHasta)} vs. mismo día</small></div>
+    <div class="kpi"><span>Promedio por día</span><b>${moneyC(dias?tot/dias:0)}</b><small>últimos 30 días</small></div>
+  </div>
+  ${mes.gastos!=null?card('Utilidad del mes',`<div class="list"><div class="li"><div class="n">Ganancia de las ventas</div><div class="v">${money(mes.ganancia)}</div></div><div class="li"><div class="n">Gastos del negocio</div><div class="v" style="color:var(--bad)">− ${money(mes.gastos)}</div></div><div class="li"><div class="n"><b>Utilidad real</b></div><div class="v" style="color:${mes.ganancia-mes.gastos<0?'var(--bad)':'var(--ok)'}">${money(mes.ganancia-mes.gastos)}</div></div></div>`):''}
+  ${card('Últimos 30 días',`<div class="chart" role="img" aria-label="Ventas por día de los últimos 30 días">${s.map((x,i)=>`<div class="${x.t?'':'zero'}${i===s.length-1?' today':''}" style="height:${Math.max(2,x.t/mx*100)}%" title="${esc(x.d)}: ${money(x.t)}"></div>`).join('')}</div><div class="axis"><span>${s[0]?fd(s[0].d):''}</span><span>${s.length?fd(s[Math.floor(s.length/2)].d):''}</span><span>Hoy</span></div>`,moneyC(tot))}
+  ${card('Mejores días del mes',lista([...s].filter(x=>x.d.slice(0,7)===(D.generado||'').slice(0,7)&&x.t>0).sort((a,b)=>b.t-a.t).slice(0,5).map(x=>`<div class="li"><div class="n">${fd(x.d,true)}<small>${x.n} ventas</small></div><div class="v">${money(x.t)}</div></div>`),'Sin ventas este mes.'))}`;
+}
+const fd=(d,l)=>new Date(d+'T12:00:00').toLocaleDateString('es-CO',l?{weekday:'long',day:'numeric',month:'short'}:{day:'numeric',month:'short'});
+function productos(){
+  const L=(D.top||{})[SUB.prod]||[],mx=Math.max(1,...L.map(x=>x.r));
+  return card('Más vendidos',`<div class="seg"><button data-sp="hoy" aria-pressed="${SUB.prod==='hoy'}">Hoy</button><button data-sp="semana" aria-pressed="${SUB.prod==='semana'}">7 días</button><button data-sp="mes" aria-pressed="${SUB.prod==='mes'}">Este mes</button></div>`+
+    lista(L.map((x,i)=>`<div class="li"><div class="n"><b style="color:var(--mu)">${i+1}.</b> ${esc(x.n)}<small>${num(x.q)} ${esc(x.u||'und')} · ganancia ${moneyC(x.g)}</small><div class="bar"><i style="width:${x.r/mx*100}%"></i></div></div><div class="v">${moneyC(x.r)}</div></div>`),'Sin ventas en este periodo.'))+
+    (D.inventario?card('Inventario',`<div class="kpis"><div class="kpi"><span>Valor a costo</span><b>${moneyC(D.inventario.valorCosto)}</b></div><div class="kpi"><span>Valor a precio</span><b>${moneyC(D.inventario.valorVenta)}</b></div></div><p class="note" style="margin:10px 0 0">${num(D.inventario.productos)} productos activos</p>`):'');
+}
+function stock(){
+  const b=D.stock||{};
+  return `<div class="kpis"><div class="kpi"><span>Agotados</span><b style="color:var(--bad)">${num(b.agotados)}</b></div><div class="kpi"><span>Stock bajo</span><b style="color:var(--wa)">${num(b.bajos)}</b></div></div>
+  ${card('Para pedir',lista((b.lista||[]).map(x=>`<div class="li"><div class="n">${esc(x.n)}<small>${esc(x.c||'')}${x.m?' · mínimo '+num(x.m):''}</small></div><span class="pill ${x.s<=0?'p-bad':'p-wa'}">${x.s<=0?'Agotado':num(x.s)+' '+esc(x.u||'')}</span></div>`),'Todo el inventario está por encima del mínimo. 👍'))}`;
+}
+function cobrar(){
+  const c=D.cobrar||{};
+  return `<section class="card hero"><h2>Te deben (créditos)</h2><div class="big">${money(c.total)}</div><div class="row"><span>${num(c.clientes)} ${c.clientes===1?'cliente':'clientes'}</span></div></section>
+  ${card('Quién debe',lista((c.lista||[]).map(x=>`<div class="li"><div class="n">${esc(x.n)}<small>${x.u?'Última compra '+fd(x.u):''}${x.tel?' · '+esc(x.tel):''}</small></div><div class="v">${money(x.s)}</div></div>`),'Nadie te debe. 👏'))}`;
+}
+$('#tabs').addEventListener('click',e=>{const b=e.target.closest('[data-t]');if(!b)return;TAB=b.dataset.t;document.querySelectorAll('#tabs button').forEach(x=>x.setAttribute('aria-pressed',x===b));render();window.scrollTo({top:0})});
+$('#ref').onclick=cargar;
+$('#sedes').addEventListener('click',e=>{const b=e.target.closest('[data-s]');if(!b)return;SEL=b.dataset.s;if(SEL!=='todas'){CFG=SEDES.find(x=>x.c===SEL);D=null;try{D=JSON.parse(localStorage.getItem(KEY+'-cache-'+SEL)||'null')}catch{}}guardarSedes();pintaSedes();if(D&&SEL!=='todas')render();cargar()});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)cargar()});
+window.addEventListener('hashchange',()=>{if(location.hash.includes('c=')){leerEnlace();D=null;cargar()}});
+leerEnlace();cargar();setInterval(()=>{if(!document.hidden)cargar()},120000);
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script>
+</body>
+</html>

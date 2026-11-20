@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VETEX · Licencias</title>
+<style>
+:root{--bg:#f6f5fb;--sf:#fff;--sf2:#f0eef8;--fg:#1c1830;--mu:#6b6684;--ln:#e2dff0;--ac:#6d4aff;--ac-s:#eee9ff;--ok:#16794a;--ok-s:#e3f6ec;--wa:#9a5b00;--wa-s:#fff3dc;--bad:#b42318;--bad-s:#fde8e6;--r:12px}
+@media (prefers-color-scheme:dark){:root{--bg:#0f0d1a;--sf:#181528;--sf2:#211d35;--fg:#ece9f7;--mu:#a29dbb;--ln:#2e2947;--ac:#9b83ff;--ac-s:#2a2250;--ok:#5fd39a;--ok-s:#123326;--wa:#f2b14c;--wa-s:#3a2a0e;--bad:#ff8a7e;--bad-s:#3b1714}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif}
+header{display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid var(--ln);background:var(--sf);position:sticky;top:0;z-index:2}
+header h1{font-size:18px;margin:0;letter-spacing:.06em}
+header .who{margin-left:auto;color:var(--mu);font-size:13px}
+header a{color:var(--ac)}
+main{max-width:1180px;margin:0 auto;padding:18px 16px 60px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:10px;margin-bottom:16px}
+.kpi{background:var(--sf);border:1px solid var(--ln);border-radius:var(--r);padding:12px 14px}
+.kpi b{display:block;font-size:24px}.kpi span{color:var(--mu);font-size:13px}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
+input,select,textarea{font:inherit;color:inherit;background:var(--sf);border:1px solid var(--ln);border-radius:10px;padding:9px 11px;min-width:0}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--ac);outline-offset:1px}
+.btn{font:inherit;border:1px solid var(--ln);background:var(--sf);color:var(--fg);border-radius:10px;padding:8px 13px;cursor:pointer;white-space:nowrap}
+.btn:hover{background:var(--sf2)}
+.btn.pri{background:var(--ac);border-color:var(--ac);color:#fff}
+.btn.sm{padding:5px 9px;font-size:13px}
+.btn.bad{color:var(--bad)}
+.list{display:grid;gap:10px}
+.card{background:var(--sf);border:1px solid var(--ln);border-radius:var(--r);padding:14px 16px;display:grid;gap:8px}
+.top{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:baseline}
+.top h3{margin:0;font-size:16px}
+.clave{font:600 14px ui-monospace,Consolas,monospace;letter-spacing:.04em;background:var(--sf2);padding:2px 8px;border-radius:7px}
+.gift{background:linear-gradient(135deg,#FFF6E0,#FCE7F3);border-color:#F2C46D}
+.p-pru{background:#FDF2E3;color:#9A5B07;border:1px solid #F2C46D}.p-conv{background:#E7F6EC;color:#1C7A3F}
+.tipo{display:flex;gap:6px;background:#F1EEF8;border-radius:10px;padding:4px;margin:0 0 10px}.tipo button{flex:1;border:0;background:none;padding:8px;border-radius:8px;font:inherit;font-weight:600;cursor:pointer}.tipo button[aria-pressed="true"]{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.pnote{font-size:13px;color:var(--mu,#667);margin:0 0 10px}
+.p-pro{background:linear-gradient(135deg,#1B2A4A,#2C4270);color:#F2D58A;border:1px solid #C9A54C}
+.p-bas{background:transparent;color:var(--mu,#667);border:1px solid var(--ln,#ddd)}
+.pill{font-size:12px;font-weight:600;padding:3px 9px;border-radius:999px}
+.p-ok{background:var(--ok-s);color:var(--ok)}.p-wa{background:var(--wa-s);color:var(--wa)}.p-bad{background:var(--bad-s);color:var(--bad)}
+.meta{color:var(--mu);font-size:13px;display:flex;flex-wrap:wrap;gap:4px 16px}
+.acts{display:flex;flex-wrap:wrap;gap:6px}
+.empty{padding:30px;text-align:center;color:var(--mu);background:var(--sf);border:1px dashed var(--ln);border-radius:var(--r)}
+dialog{border:1px solid var(--ln);border-radius:16px;background:var(--sf);color:var(--fg);padding:20px;width:min(520px,calc(100vw - 32px))}
+dialog::backdrop{background:rgba(10,8,20,.55)}
+dialog h2{margin:0 0 12px;font-size:18px}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.form label{display:grid;gap:4px;font-size:13px;color:var(--mu)}
+.form .full{grid-column:1/-1}
+.row{display:flex;gap:8px;justify-content:flex-end;margin-top:14px;flex-wrap:wrap}
+.err{color:var(--bad);font-size:13px;min-height:18px;margin-top:8px}
+.ev{font-size:13px;border-top:1px solid var(--ln);padding:6px 0;display:grid;grid-template-columns:150px 140px 1fr;gap:8px}
+.ev:first-child{border-top:0}
+#toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:10px;font-size:14px;opacity:0;transition:opacity .2s;pointer-events:none}
+#toast.on{opacity:1}
+@media (max-width:640px){.form{grid-template-columns:1fr}.ev{grid-template-columns:1fr}header{flex-wrap:wrap}}
+</style>
+</head>
+<body>
+<header><h1>VETEX · Licencias</h1><span class="who" id="who"></span><a href="/.auth/logout?post_logout_redirect_uri=/" style="font-size:13px">Salir</a></header>
+<main>
+  <div class="kpis" id="kpis"></div>
+  <div class="bar">
+    <button class="btn pri" id="nueva">+ Nueva licencia</button>
+    <button class="btn gift" id="nuevaPrueba">🎁 Nueva prueba gratis</button>
+    <input id="q" type="search" placeholder="Buscar negocio, NIT o clave" style="flex:1;min-width:200px">
+    <select id="fEst"><option value="">Todas</option><option value="activa">Activas</option><option value="porvencer">Por vencer (7 días)</option><option value="vencida">Vencidas</option><option value="bloqueada">Bloqueadas</option><option value="prueba">🎁 En prueba</option><option value="pfin">Pruebas terminadas sin pagar</option><option value="conv">🎉 Convertidas</option></select>
+    <select id="fPlan"><option value="">Pro y Básico</option><option value="pro">Solo Pro</option><option value="basico">Solo Básico</option></select>
+    <button class="btn" id="verEv">Historial</button>
+    <button class="btn" id="recargar">Actualizar</button>
+  </div>
+  <div class="list" id="list"><div class="empty">Cargando…</div></div>
+</main>
+
+<dialog id="dNueva"><form method="dialog" id="fNueva">
+  <h2 id="tNueva">Nueva licencia</h2>
+  <div class="tipo" id="tipoNueva"><button type="button" data-tp="pagada" aria-pressed="true">Licencia pagada</button><button type="button" data-tp="prueba" aria-pressed="false">🎁 Prueba gratis</button></div>
+  <p class="pnote" id="pNota" hidden>15 días con <b>todo el plan Pro</b> (IA con 20 consultas y diseño Ejecutivo), 1 computador. Al terminar, VETEX le muestra al cliente lo que logró y los planes; si no paga, queda en solo consulta con sus datos guardados. Una prueba por NIT.</p>
+  <div class="form">
+    <label class="full">Negocio *<input name="negocio" required maxlength="120"></label>
+    <label>NIT / cédula<input name="nit" maxlength="40"></label>
+    <label>Grupo de sedes <small style="font-weight:400">(mismo dueño con varios locales; si se deja vacío se agrupan por NIT)</small><input name="grupo" maxlength="60" placeholder="Ej. plasticos-andinos"></label>
+    <label>Teléfono<input name="telefono" maxlength="40"></label>
+    <label data-solo="pagada">Duración<select name="meses"><option value="1">1 mes</option><option value="3">3 meses</option><option value="6">6 meses</option><option value="12">1 año</option></select></label>
+    <label data-solo="pagada">Equipos permitidos (computadores + tablets)<input name="maxEquipos" type="number" min="1" max="10" value="1"></label>
+    <label class="full" data-solo="pagada" style="flex-direction:row;align-items:center;gap:8px"><input name="ia" type="checkbox" style="width:auto"> ⭐ Plan Pro</label>
+    <label class="full">Notas (solo las ves tú)<textarea name="notas" rows="2" maxlength="500"></textarea></label>
+  </div>
+  <div class="err" id="eNueva"></div>
+  <div class="row"><button class="btn" value="cancel" formnovalidate>Cancelar</button><button class="btn pri" id="okNueva" value="ok">Crear</button></div>
+</form></dialog>
+
+<dialog id="dConv"><form method="dialog" id="fConv">
+  <h2>🎉 Convertir prueba en cliente</h2>
+  <p class="pnote" id="convTxt"></p>
+  <div class="form">
+    <label>¿Cuánto pagó?<select name="meses"><option value="1">1 mes</option><option value="12">1 año</option></select></label>
+    <label>¿Qué plan?<select name="plan"><option value="pro">⭐ Pro</option><option value="basico">Básico</option></select></label>
+  </div>
+  <div class="err" id="eConv"></div>
+  <div class="row"><button class="btn" value="cancel" formnovalidate>Cancelar</button><button class="btn pri" value="ok">Convertir</button></div>
+</form></dialog>
+
+<dialog id="dEdit"><form method="dialog" id="fEdit">
+  <h2 id="tEdit">Editar</h2>
+  <div class="form">
+    <label class="full">Negocio<input name="negocio" maxlength="120"></label>
+    <label>NIT / cédula<input name="nit" maxlength="40"></label>
+    <label>Grupo de sedes <small style="font-weight:400">(mismo dueño con varios locales; si se deja vacío se agrupan por NIT)</small><input name="grupo" maxlength="60" placeholder="Ej. plasticos-andinos"></label>
+    <label>Teléfono<input name="telefono" maxlength="40"></label>
+    <label>Vence<input name="vence" type="date"></label>
+    <label>Equipos permitidos (computadores + tablets)<input name="maxEquipos" type="number" min="1" max="10"></label>
+    <label class="full" style="flex-direction:row;align-items:center;gap:8px"><input name="ia" type="checkbox" style="width:auto"> ⭐ Plan Pro: inteligencia artificial (leer facturas y preguntas del dueño) y diseño Ejecutivo</label>
+    <label class="full">Mensaje para el cliente (sale en VETEX)<input name="mensaje" maxlength="500" placeholder="Ej. Tu pago vence pronto"></label>
+    <label class="full">Notas (solo las ves tú)<textarea name="notas" rows="2" maxlength="500"></textarea></label>
+  </div>
+  <div class="err" id="eEdit"></div>
+  <div class="row"><button class="btn" value="cancel" formnovalidate>Cancelar</button><button class="btn pri" value="ok">Guardar</button></div>
+</form></dialog>
+
+<dialog id="dEv"><h2 id="tEv">Historial</h2><div id="evList"></div><div class="row"><button class="btn" onclick="this.closest('dialog').close()">Cerrar</button></div></dialog>
+<dialog id="dTec"><h2 id="tTec">Código técnico</h2>
+  <p style="margin:0 0 6px;color:var(--mu,#667)">Con este código entras como <b>Acceso técnico VETEX</b> en el computador del cliente. Cambia cada 30 segundos y cada negocio tiene el suyo.</p>
+  <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin:10px 0">
+    <div><div id="tecCod" style="font:700 40px/1 ui-monospace,Consolas,monospace;letter-spacing:6px">------</div>
+    <div style="height:6px;background:#0001;border-radius:3px;margin-top:8px;overflow:hidden"><div id="tecBar" style="height:100%;background:#2b7a4b;width:100%"></div></div>
+    <small id="tecSeg"></small></div>
+    <div id="tecQr" style="background:#fff;padding:6px;border-radius:8px"></div>
+  </div>
+  <p style="font-size:13px;margin:4px 0">📱 Escanea el QR con Google Authenticator o Microsoft Authenticator para tener el código en tu celular.</p>
+  <p style="font-size:13px;margin:4px 0">Si lo renuevas, el código anterior deja de servir cuando ese VETEX se conecte a internet.</p>
+  <div class="row"><button class="btn bad" id="tecNuevo">Renovar código</button><button class="btn" onclick="this.closest('dialog').close()">Cerrar</button></div>
+</dialog>
+<script src="qrcode.js"></script>
+<div id="toast" role="status"></div>
+
+<script>
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let DATA={licencias:[],hoy:''};
+const toast=m=>{const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),2600)};
+const fecha=s=>s?new Date(s).toLocaleString('es-CO',{dateStyle:'medium',timeStyle:'short'}):'—';
+const dias=(a,b)=>Math.round((new Date(a+'T12:00:00Z')-new Date(b+'T12:00:00Z'))/864e5);
+async function api(path,body){
+  const r=await fetch('/api/gestion/'+path,body?{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}:{cache:'no-store'});
+  let j={};try{j=await r.json()}catch{}
+  if(!r.ok||!j.ok)throw new Error(j.mensaje||('Error '+r.status));return j;
+}
+function estado(l){
+  if(l.estado==='bloqueada')return{k:'bloqueada',t:'Bloqueada',c:'p-bad'};
+  const d=dias(l.vence,DATA.hoy);
+  if(l.prueba)return d<0?{k:'pfin',t:'Prueba terminada hace '+(-d)+' d',c:'p-bad'}:{k:'prueba',t:'🎁 Prueba · '+(d===0?'termina hoy':'quedan '+d+' d'),c:'p-pru'};
+  if(d<0)return{k:'vencida',t:'Vencida hace '+(-d)+' d',c:'p-bad'};
+  if(d<=7)return{k:'porvencer',t:d===0?'Vence hoy':'Vence en '+d+' d',c:'p-wa'};
+  return{k:'activa',t:'Activa',c:'p-ok'};
+}
+function render(){
+  const gk=x=>(x.grupo||'').trim().toLowerCase()||(String(x.nit||'').replace(/\D/g,'').replace(/^(\d{9})\d$/,'$1')?'nit:'+String(x.nit||'').replace(/\D/g,'').replace(/^(\d{9})\d$/,'$1'):'');
+  const L=DATA.licencias,q=$('#q').value.trim().toLowerCase(),f=$('#fEst').value,fp=$('#fPlan').value;
+  const n=k=>L.filter(l=>estado(l).k===k).length;
+  $('#kpis').innerHTML=`<div class="kpi"><b>${L.length}</b><span>Licencias</span></div><div class="kpi"><b>${n('activa')}</b><span>Activas</span></div><div class="kpi"><b>${n('porvencer')}</b><span>Por vencer (7 días)</span></div><div class="kpi"><b>${n('vencida')+n('bloqueada')}</b><span>Vencidas o bloqueadas</span></div><div class="kpi"><b>${L.filter(l=>l.ia&&!l.prueba).length}</b><span>⭐ Con Pro</span></div><div class="kpi"><b>${n('prueba')}</b><span>🎁 En prueba</span></div><div class="kpi"><b>${(()=>{const t=L.filter(l=>l.tuvoPrueba).length,c=L.filter(l=>l.tuvoPrueba&&!l.prueba&&l.convertida).length;return t?c+'/'+t:'—'})()}</b><span>Pruebas que pagaron</span></div><div class="kpi"><b>${L.filter(l=>!l.ia&&!l.prueba).length}</b><span>Básico (sin Pro)</span></div>`;
+  const vis=L.filter(l=>(!f||(f==='conv'?!!l.convertida:estado(l).k===f||(f==='activa'&&estado(l).k==='porvencer')))&&(!fp||(fp==='pro')===!!(l.ia&&!l.prueba))&&(!q||[l.negocio,l.nit,l.clave,l.telefono].join(' ').toLowerCase().includes(q)));
+  if(!L.length){$('#list').innerHTML='<div class="empty">Aún no tienes licencias. Crea la primera con “+ Nueva licencia”.</div>';return}
+  if(!vis.length){$('#list').innerHTML='<div class="empty">Nada coincide con el filtro.</div>';return}
+  $('#list').innerHTML=vis.map(l=>{const e=estado(l);const eq=l.equipos.length;
+    return`<article class="card"><div class="top"><h3>${esc(l.negocio)}</h3><span class="clave">${esc(l.clave)}</span><span class="pill ${e.c}">${e.t}</span>${l.prueba?'':l.ia?'<span class="pill p-pro" title="Plan Pro: IA y diseño Ejecutivo">⭐ Pro</span>':'<span class="pill p-bas">Básico</span>'}${l.convertida?`<span class="pill p-conv" title="Empezó con prueba gratis y pagó">🎉 Vino de prueba</span>`:''}</div>${l.prueba?`<div class="meta" style="color:#9A5B07">🎁 Prueba gratis de ${l.pruebaDias||15} días con todo Pro · IA usada ${l.iaPru||0}/20</div>`:''}
+    <div class="meta"><span>Vence: <b>${esc(l.vence)}</b></span><span>Equipos: ${eq}/${l.maxEquipos}${(n=>n?` <span title="Tablets conectadas al principal">(📱 ${n} tablet${n>1?'s':''})</span>`:'')(l.equipos.filter(x=>x&&x.tipo==='tablet').length)}</span>${l.nit?`<span>NIT: ${esc(l.nit)}</span>`:''}${(n=>n>1?`<span title="Sedes del mismo dueño">🏬 ${n} sedes</span>`:'')(L.filter(x=>gk(x)&&gk(x)===gk(l)).length)}${l.telefono?`<span>Tel: ${esc(l.telefono)}</span>`:''}<span>Última conexión: ${fecha(l.ultimoContacto)}${l.ultimaVersion?' · '+esc(l.ultimaVersion):''}</span><span${l.ultimoRespaldo&&Date.now()-new Date(l.ultimoRespaldo)>3*864e5?' style="color:var(--wa)"':''}>Respaldo en la nube: ${l.ultimoRespaldo?fecha(l.ultimoRespaldo)+' · '+(l.respaldoTam>=1048576?(l.respaldoTam/1048576).toFixed(1)+' MB':Math.max(1,Math.round(l.respaldoTam/1024))+' KB')+' · '+l.respaldos+' copias':'ninguno'}</span>${l.ia?`<span>🤖 Pro · IA ${l.iaUso} este mes</span>`:''}${l.ultimoPago?`<span>💳 Último pago: ${fecha(l.ultimoPago)} · $${Number(l.ultimoPagoMonto).toLocaleString('es-CO')} · ${l.ultimoPagoPlan==='anual'?'1 año':'1 mes'}</span>`:''}${l.celulares?`<span>📱 ${l.celulares} ${l.celulares===1?'celular conectado':'celulares conectados'}</span>`:''}</div>
+    ${l.notas?`<div class="meta">📝 ${esc(l.notas)}</div>`:''}${l.mensaje?`<div class="meta">💬 Mensaje al cliente: ${esc(l.mensaje)}</div>`:''}
+    <div class="acts">
+      ${l.prueba?`<button class="btn sm pri" data-a="conv" data-c="${l.clave}">🎉 Pagó: convertir</button><button class="btn sm" data-a="finpru" data-c="${l.clave}">Terminar prueba</button>`:`<button class="btn sm" data-a="mes" data-c="${l.clave}">+1 mes</button>
+      <button class="btn sm" data-a="anio" data-c="${l.clave}">+1 año</button>`}
+      <button class="btn sm" data-a="edit" data-c="${l.clave}">Editar</button>
+      <button class="btn sm" data-a="copiar" data-c="${l.clave}">Copiar clave</button>
+      ${l.telefono?`<button class="btn sm" data-a="wa" data-c="${l.clave}">WhatsApp</button>`:''}
+      ${eq?`<button class="btn sm" data-a="liberar" data-c="${l.clave}">Liberar computador</button>`:''}
+      ${l.prueba?'':`<button class="btn sm" data-a="pro" data-c="${l.clave}">${l.ia?'Quitar Pro':'⭐ Pasar a Pro'}</button>`}
+      <button class="btn sm" data-a="ev" data-c="${l.clave}">Historial</button>
+      <button class="btn sm" data-a="tec" data-c="${l.clave}">🔐 Código técnico</button>
+      ${l.estado==='bloqueada'?`<button class="btn sm" data-a="desbloq" data-c="${l.clave}">Desbloquear</button>`:`<button class="btn sm bad" data-a="bloq" data-c="${l.clave}">Bloquear</button>`}
+    </div></article>`}).join('');
+}
+async function cargar(){
+  try{const j=await api('listar');DATA=j;$('#who').textContent=j.usuario||'';render()}
+  catch(e){$('#list').innerHTML=`<div class="empty">No se pudo cargar: ${esc(e.message)}</div>`}
+}
+const lic=c=>DATA.licencias.find(l=>l.clave===c);
+function upd(l){const i=DATA.licencias.findIndex(x=>x.clave===l.clave);if(i>=0)DATA.licencias[i]=l;else DATA.licencias.push(l);render()}
+async function accion(a,c){
+  const l=lic(c);if(!l)return;
+  try{
+    if(a==='mes'||a==='anio'){const j=await api('actualizar',{clave:c,sumarMeses:a==='mes'?1:12});upd(j.licencia);toast('Renovada hasta '+j.licencia.vence)}
+    else if(a==='copiar'){await navigator.clipboard.writeText(c);toast('Clave copiada')}
+    else if(a==='wa'){const tel=l.telefono.replace(/\D/g,'');const num=tel.length===10?'57'+tel:tel;const m=`Hola, esta es tu licencia de VETEX para ${l.negocio}:\n\n${l.clave}\n\nVence el ${l.vence}.`;window.open('https://wa.me/'+num+'?text='+encodeURIComponent(m),'_blank','noopener')}
+    else if(a==='conv'){const f=$('#fConv');f.reset();f.dataset.c=c;$('#eConv').textContent='';$('#convTxt').innerHTML=`<b>${esc(l.negocio)}</b> pasa de prueba gratis a cliente. Los días que le quedaban de prueba se suman.`;$('#dConv').showModal()}
+    else if(a==='finpru'){if(!confirm(`¿Terminar ya la prueba de “${l.negocio}”? VETEX le mostrará los planes y quedará en solo consulta hasta que pague.`))return;const j=await api('actualizar',{clave:c,terminarPrueba:true});upd(j.licencia);toast('Prueba terminada')}
+    else if(a==='pro'){const on=!l.ia;if(!confirm(on?`¿Activar el plan Pro para “${l.negocio}”? Tendrá IA y el diseño Ejecutivo desde su próximo chequeo con internet.`:`¿Quitar el plan Pro a “${l.negocio}”? Pierde la IA y el diseño Ejecutivo en su próximo chequeo.`))return;const j=await api('actualizar',{clave:c,ia:on});upd(j.licencia);toast(on?'Ahora es Pro':'Pasó a Básico')}
+    else if(a==='liberar'){if(!confirm(`¿Liberar los equipos (computadores y tablets) de “${l.negocio}”? La próxima vez que abran VETEX, cada uno se vuelve a activar solo.`))return;const j=await api('actualizar',{clave:c,liberarEquipos:true});upd(j.licencia);toast('Computadores liberados')}
+    else if(a==='bloq'){if(!confirm(`¿Bloquear la licencia de “${l.negocio}”? VETEX se bloqueará en su próximo chequeo con internet.`))return;const j=await api('actualizar',{clave:c,estado:'bloqueada'});upd(j.licencia);toast('Bloqueada')}
+    else if(a==='desbloq'){const j=await api('actualizar',{clave:c,estado:'activa'});upd(j.licencia);toast('Desbloqueada')}
+    else if(a==='edit')editar(l);
+    else if(a==='ev')historial(c);
+    else if(a==='tec')codigoTec(c);
+  }catch(e){toast(e.message)}
+}
+function editar(l){
+  const f=$('#fEdit');$('#tEdit').textContent='Editar · '+l.negocio;$('#eEdit').textContent='';
+  ['negocio','nit','grupo','telefono','vence','maxEquipos','mensaje','notas'].forEach(k=>f.elements[k].value=l[k]??'');f.elements.ia.checked=!!l.ia;
+  f.dataset.c=l.clave;$('#dEdit').showModal();
+}
+$('#fEdit').addEventListener('submit',async e=>{
+  if(e.submitter&&e.submitter.value==='cancel')return;e.preventDefault();const f=e.target;
+  const b={clave:f.dataset.c};['negocio','nit','grupo','telefono','vence','maxEquipos','mensaje','notas'].forEach(k=>b[k]=f.elements[k].value);b.ia=f.elements.ia.checked;
+  if(!b.negocio.trim()){$('#eEdit').textContent='El negocio no puede quedar vacío.';return}
+  try{const j=await api('actualizar',b);upd(j.licencia);$('#dEdit').close();toast('Guardado')}catch(x){$('#eEdit').textContent=x.message}
+});
+let tipoNueva='pagada';
+function setTipo(t){tipoNueva=t;$('#tipoNueva').querySelectorAll('[data-tp]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.tp===t));$('#pNota').hidden=t!=='prueba';$('#fNueva').querySelectorAll('[data-solo]').forEach(x=>x.hidden=x.dataset.solo!==t);$('#tNueva').textContent=t==='prueba'?'🎁 Nueva prueba gratis':'Nueva licencia';$('#okNueva').textContent=t==='prueba'?'Crear prueba':'Crear'}
+$('#tipoNueva').querySelectorAll('[data-tp]').forEach(b=>b.onclick=()=>setTipo(b.dataset.tp));
+const abrirNueva=t=>{$('#fNueva').reset();$('#eNueva').textContent='';setTipo(t);$('#dNueva').showModal()};
+$('#nueva').onclick=()=>abrirNueva('pagada');$('#nuevaPrueba').onclick=()=>abrirNueva('prueba');
+$('#fConv').addEventListener('submit',async e=>{if(e.submitter&&e.submitter.value==='cancel')return;e.preventDefault();const f=e.target;
+  try{const j=await api('actualizar',{clave:f.dataset.c,sumarMeses:+f.elements.meses.value,ia:f.elements.plan.value==='pro'});upd(j.licencia);$('#dConv').close();toast('🎉 Ahora es cliente · vence '+j.licencia.vence)}catch(x){$('#eConv').textContent=x.message}});
+$('#fNueva').addEventListener('submit',async e=>{
+  if(e.submitter&&e.submitter.value==='cancel')return;e.preventDefault();const f=e.target;
+  const b=Object.fromEntries(new FormData(f));if(!b.negocio.trim()){$('#eNueva').textContent='Escribe el nombre del negocio.';return}
+  b.ia=!!f.elements.ia.checked;if(tipoNueva==='prueba'){b.prueba=true;delete b.meses;delete b.maxEquipos;b.ia=true}
+  $('#okNueva').disabled=true;
+  try{let j;try{j=await api('crear',b)}catch(x){if(b.prueba&&/ya tuvo una prueba/.test(x.message)&&confirm(x.message+'\n\n¿Crear otra prueba de todos modos?')){b.forzar=true;j=await api('crear',b)}else throw x}upd(j.licencia);$('#dNueva').close();try{await navigator.clipboard.writeText(j.licencia.clave)}catch{}toast('Creada: '+j.licencia.clave+' (copiada)')}
+  catch(x){$('#eNueva').textContent=x.message}finally{$('#okNueva').disabled=false}
+});
+async function historial(c){
+  $('#tEv').textContent=c?'Historial · '+(lic(c)||{}).negocio:'Historial (todas)';$('#evList').innerHTML='Cargando…';$('#dEv').showModal();
+  const nom={ia_factura:'🤖 Factura leída con IA',pago:'💳 Pago recibido',pago_iniciado:'Pago iniciado',pago_rechazado:'Pago rechazado',pago_monto_distinto:'Pago con monto distinto (revisar)',pago_desconocido:'Pago sin referencia conocida',celular_conectado:'Celular del dueño conectado',celulares_desconectados:'Celulares desconectados',restauracion:'Restauración de respaldo',activacion:'Activación',creada:'Creada',cambio:'Cambio',rechazo_bloqueada:'Rechazo: bloqueada',rechazo_otro_equipo:'Rechazo: otro computador',clave_inexistente:'Clave inexistente'};
+  try{const j=await api('eventos'+(c?'?clave='+encodeURIComponent(c):''));
+    $('#evList').innerHTML=j.eventos.length?j.eventos.map(v=>`<div class="ev"><span>${fecha(v.fecha)}</span><b>${esc(nom[v.tipo]||v.tipo)}</b><span>${c?'':esc(v.clave)+' · '}${esc(v.detalle)}</span></div>`).join(''):'<p>Sin movimientos.</p>'}
+  catch(x){$('#evList').textContent=x.message}
+}
+/* Código técnico: TOTP estándar (RFC 6238, SHA-1, 6 dígitos, 30 s) */
+function b32(s){const A='ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';let bits=0,val=0;const o=[];for(const ch of s.replace(/=+$/,'').toUpperCase()){const i=A.indexOf(ch);if(i<0)continue;val=(val<<5)|i;bits+=5;if(bits>=8){o.push((val>>>(bits-8))&255);bits-=8}}return new Uint8Array(o)}
+async function totp(sec,paso){const k=await crypto.subtle.importKey('raw',b32(sec),{name:'HMAC',hash:'SHA-1'},false,['sign']);const m=new ArrayBuffer(8);const dv=new DataView(m);dv.setUint32(0,Math.floor(paso/4294967296));dv.setUint32(4,paso>>>0);const h=new Uint8Array(await crypto.subtle.sign('HMAC',k,m));const o=h[19]&15;const n=((h[o]&127)<<24|h[o+1]<<16|h[o+2]<<8|h[o+3])%1e6;return String(n).padStart(6,'0')}
+let TEC=null;
+async function codigoTec(c){
+  let l=lic(c);
+  if(!l.totp){try{const j=await api('actualizar',{clave:c,verTotp:true});upd(j.licencia);l=j.licencia}catch(e){toast(e.message);return}}
+  $('#tTec').textContent='Código técnico · '+l.negocio;
+  const uri='otpauth://totp/'+encodeURIComponent('VETEX:'+l.negocio)+'?secret='+l.totp+'&issuer=VETEX&digits=6&period=30';
+  try{const q=qrcode(0,'M');q.addData(uri);q.make();$('#tecQr').innerHTML=q.createSvgTag({cellSize:4,margin:2})}catch{$('#tecQr').textContent=''}
+  clearInterval(TEC);const tick=async()=>{const s=Date.now()/1000,p=Math.floor(s/30),r=30-Math.floor(s%30);$('#tecCod').textContent=(await totp(l.totp,p)).replace(/(\d{3})/,'$1 ');$('#tecBar').style.width=(r/30*100)+'%';$('#tecSeg').textContent='Cambia en '+r+' s'};
+  await tick();TEC=setInterval(tick,1000);
+  $('#tecNuevo').onclick=async()=>{if(!confirm('¿Renovar el código técnico de “'+l.negocio+'”? Tendrás que volver a escanear el QR en tu celular.'))return;try{const j=await api('actualizar',{clave:c,nuevoTotp:true});upd(j.licencia);toast('Código renovado');codigoTec(c)}catch(e){toast(e.message)}};
+  $('#dTec').showModal();
+}
+$('#dTec').addEventListener('close',()=>clearInterval(TEC));
+$('#list').addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(b)accion(b.dataset.a,b.dataset.c)});
+$('#q').oninput=render;$('#fEst').onchange=render;$('#fPlan').onchange=render;$('#recargar').onclick=cargar;$('#verEv').onclick=()=>historial('');
+cargar();
+</script>
+</body>
+</html>

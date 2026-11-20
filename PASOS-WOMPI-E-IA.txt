@@ -1,0 +1,78 @@
+VETEX - CÓMO ACTIVAR LOS PAGOS EN LÍNEA CON WOMPI
+=================================================
+
+1. Crea tu cuenta de comercio en https://comercios.wompi.co (con tu RUT y tu cuenta bancaria).
+   Mientras te aprueban puedes usar el MODO DE PRUEBAS (Sandbox): no se cobra dinero real.
+
+2. En el panel de Wompi entra a "Desarrolladores" (o "Mi cuenta" > "Secretos para integración técnica")
+   y copia estas tres cosas (primero las de PRUEBAS, que empiezan por pub_test_ / test_):
+     - Llave pública ............ pub_test_...
+     - Secreto de integridad .... test_integrity_...
+     - Secreto de eventos ....... test_events_...
+   NUNCA copies ni compartas la "Llave privada": VETEX no la necesita.
+
+3. En Azure: abre tu Static Web App > Configuración (Environment variables) > Agrega:
+     WOMPI_PUBLICA      = (la llave pública)
+     WOMPI_INTEGRIDAD   = (el secreto de integridad)
+     WOMPI_EVENTOS      = (el secreto de eventos)
+   Guarda (Apply / Save).
+   Opcional - cambiar precios sin tocar código:
+     VETEX_PRECIOS = {"mensual":49900,"anual":499000,"extraMensual":16900,"extraAnual":169000}
+
+4. En Wompi > Desarrolladores > "URL de eventos", pon (en Sandbox y luego en Producción):
+     https://wonderful-desert-0d7a5580f.3.azurestaticapps.net/api/wompi
+
+5. Prueba desde VETEX: Licencia > "Renovar y pagar". Debe decir "Modo de pruebas".
+   En la página de Wompi usa los datos de prueba (por ejemplo, Nequi de prueba 3991111111 = aprobado).
+   La licencia se renueva sola en segundos y en tu panel aparece "Pago recibido".
+
+6. Cuando Wompi apruebe tu comercio: cambia las tres variables por las de PRODUCCIÓN
+   (pub_prod_..., prod_integrity_..., prod_events_...) y configura la URL de eventos de producción.
+   Desde ese momento los pagos son reales.
+
+Precios actuales por caja: 1 mes $49.900 · 1 año $499.000 · caja adicional +$16.900/mes o +$169.000/año.
+
+-------------------------------------------------
+VETEX PRO - ACTIVAR LA INTELIGENCIA ARTIFICIAL
+-------------------------------------------------
+1. Crea una cuenta en https://platform.claude.com (Claude Console), agrega un medio de pago
+   y crea una "API key". Ponle un límite de gasto mensual (por ejemplo USD 10) en la consola.
+2. En Azure > tu Static Web App > Environment variables agrega:
+     VETEX_IA_LLAVE  = (la API key, empieza por sk-ant-...)
+   Opcionales (ya tienen un valor por defecto seguro):
+     VETEX_IA_MODELO     = claude-haiku-5-5   (modelo de IA)
+     VETEX_IA_LIMITE     = 200                (consultas por mes y por licencia)
+     VETEX_IA_TOPE_DIA   = 300                (máximo por día entre TODOS los clientes)
+     VETEX_IA_POR_MINUTO = 6                  (máximo por minuto por licencia, frena ráfagas)
+3. En tu panel, edita la licencia y marca "Plan Pro". Ese VETEX lo verá en la siguiente revisión de licencia
+   (o en Licencia > Revisar ahora). Aparecen: "Leer factura con IA" en Compras y "Pregúntale a VETEX" en Reportes.
+4. El plan Pro suma $17.900/mes o $179.000/año al pago en línea de esa licencia.
+NUNCA compartas la API key: solo va en Azure.
+
+SEGURIDAD DE LA LLAVE
+- Activa la verificación en dos pasos en la consola de Claude, en Azure y en GitHub.
+- En la consola crea un Workspace solo para VETEX, con su propia llave y un límite de gasto mensual (ej. USD 10).
+- Nunca pegues la llave en archivos ni la subas a GitHub. Si se filtra: bórrala en la consola, crea otra y cámbiala en Azure.
+- Si una consulta falla, no se cuenta. Si se alcanza el tope diario, queda registrado en el historial de tu panel.
+
+==================================================================
+PRUEBA GRATIS (opcional: ya funciona sin configurar nada)
+==================================================================
+- En tu página de licencias pulsa "🎁 Nueva prueba gratis": 15 días con todo
+  el plan Pro, 1 computador, 20 consultas de IA en total. Una por NIT.
+- Cuando el cliente paga en línea, la prueba se convierte sola en cliente.
+  Si te paga a ti en efectivo, pulsa "🎉 Pagó: convertir" y elige el plan.
+- Si quieres cambiar los valores, agrega en Azure (Configuración):
+    VETEX_DIAS_PRUEBA        = 15   (días de prueba)
+    VETEX_IA_LIMITE_PRUEBA   = 20   (consultas de IA en toda la prueba)
+
+==================================================================
+VARIAS SEDES (plan Pro)
+==================================================================
+- Las licencias con el mismo NIT quedan como sedes del mismo dueño.
+  Si un local tiene otro NIT, en tu página de licencias edita las dos
+  licencias y ponles el mismo "Grupo de sedes" (ej. plasticos-andinos).
+- Las dos sedes deben tener Pro para mandarse mercancía:
+  Inventario → Sedes y traslados → Enviar mercancía / Por recibir.
+- En el celular del dueño: escanea el código QR de cada sede y aparece
+  "Todas las sedes" con las ventas y alertas de todos los locales.

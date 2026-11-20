@@ -1,0 +1,17 @@
+{
+  "version": "5.19.3",
+  "fecha": "2026-11-19",
+  "notas": "5.19.3: elegir la voz y la velocidad del aviso de pago",
+  "archivo": "VETEX.html",
+  "sha256": "4d32ef226f7950dd3a44e1087ed87badb96b80f042063d74ead043a6b43b1e12",
+  "puente": {
+    "archivo": "impresora.ps1",
+    "sha256": "e1b8f4f63084883563b967350265ebebcb836f81b0e429de7c8576a0567b4ab7"
+  },
+  "extras": [
+    {
+      "archivo": "VetexDb.cs",
+      "sha256": "fc0975ee3511ceb5b37d4db60ccce395bcfc2786d0b6f55105b9ea132a40ea0d"
+    }
+  ]
+}

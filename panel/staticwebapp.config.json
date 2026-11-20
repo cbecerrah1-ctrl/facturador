@@ -1,0 +1,137 @@
+{
+  "routes": [
+    {
+      "route": "/api/ia/*",
+      "allowedRoles": [
+        "anonymous"
+      ]
+    },
+    {
+      "route": "/api/pago/*",
+      "allowedRoles": [
+        "anonymous"
+      ]
+    },
+    {
+      "route": "/api/wompi",
+      "allowedRoles": [
+        "anonymous"
+      ]
+    },
+    {
+      "route": "/pago",
+      "redirect": "/pago/",
+      "statusCode": 301
+    },
+    {
+      "route": "/pago/*",
+      "allowedRoles": [
+        "anonymous"
+      ]
+    },
+    {
+      "route": "/api/licencia",
+      "allowedRoles": [
+        "anonymous"
+      ]
+    },
+    {
+      "route": "/api/respaldo",
+      "allowedRoles": [
+        "anonymous"
+      ]
+    },
+    {
+      "route": "/api/sedes/*",
+      "allowedRoles": [
+        "anonymous"
+      ]
+    },
+    {
+      "route": "/api/dueno",
+      "allowedRoles": [
+        "anonymous"
+      ]
+    },
+    {
+      "route": "/api/gestion/*",
+      "allowedRoles": [
+        "admin"
+      ]
+    },
+    {
+      "route": "/.auth/login/aad",
+      "statusCode": 404
+    },
+    {
+      "route": "/.auth/login/twitter",
+      "statusCode": 404
+    },
+    {
+      "route": "/sin-permiso.html",
+      "allowedRoles": [
+        "anonymous"
+      ]
+    },
+    {
+      "route": "/dueno",
+      "redirect": "/dueno/",
+      "statusCode": 301
+    },
+    {
+      "route": "/dueno/*",
+      "allowedRoles": [
+        "anonymous"
+      ]
+    },
+    {
+      "route": "/actualizacion/version.json",
+      "allowedRoles": [
+        "anonymous"
+      ],
+      "headers": {
+        "Cache-Control": "no-store",
+        "Access-Control-Allow-Origin": "*"
+      }
+    },
+    {
+      "route": "/actualizacion/*",
+      "allowedRoles": [
+        "anonymous"
+      ],
+      "headers": {
+        "Cache-Control": "no-cache",
+        "Access-Control-Allow-Origin": "*"
+      }
+    },
+    {
+      "route": "/*",
+      "allowedRoles": [
+        "admin"
+      ]
+    }
+  ],
+  "responseOverrides": {
+    "401": {
+      "redirect": "/.auth/login/github?post_login_redirect_uri=/",
+      "statusCode": 302
+    },
+    "403": {
+      "rewrite": "/sin-permiso.html",
+      "statusCode": 403
+    }
+  },
+  "globalHeaders": {
+    "X-Content-Type-Options": "nosniff",
+    "Referrer-Policy": "no-referrer",
+    "X-Frame-Options": "DENY"
+  },
+  "platform": {
+    "apiRuntime": "node:22"
+  },
+  "mimeTypes": {
+    ".webmanifest": "application/manifest+json",
+    ".ps1": "text/plain",
+    ".cs": "text/plain"
+  }
+}

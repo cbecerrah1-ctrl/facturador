@@ -1,0 +1,33 @@
+VETEX - CÓMO ACTIVAR LOS PAGOS EN LÍNEA CON WOMPI
+=================================================
+
+1. Crea tu cuenta de comercio en https://comercios.wompi.co (con tu RUT y tu cuenta bancaria).
+   Mientras te aprueban puedes usar el MODO DE PRUEBAS (Sandbox): no se cobra dinero real.
+
+2. En el panel de Wompi entra a "Desarrolladores" (o "Mi cuenta" > "Secretos para integración técnica")
+   y copia estas tres cosas (primero las de PRUEBAS, que empiezan por pub_test_ / test_):
+     - Llave pública ............ pub_test_...
+     - Secreto de integridad .... test_integrity_...
+     - Secreto de eventos ....... test_events_...
+   NUNCA copies ni compartas la "Llave privada": VETEX no la necesita.
+
+3. En Azure: abre tu Static Web App > Configuración (Environment variables) > Agrega:
+     WOMPI_PUBLICA      = (la llave pública)
+     WOMPI_INTEGRIDAD   = (el secreto de integridad)
+     WOMPI_EVENTOS      = (el secreto de eventos)
+   Guarda (Apply / Save).
+   Opcional - cambiar precios sin tocar código:
+     VETEX_PRECIOS = {"mensual":49900,"anual":499000,"extraMensual":16900,"extraAnual":169000}
+
+4. En Wompi > Desarrolladores > "URL de eventos", pon (en Sandbox y luego en Producción):
+     https://wonderful-desert-0d7a5580f.3.azurestaticapps.net/api/wompi
+
+5. Prueba desde VETEX: Licencia > "Renovar y pagar". Debe decir "Modo de pruebas".
+   En la página de Wompi usa los datos de prueba (por ejemplo, Nequi de prueba 3991111111 = aprobado).
+   La licencia se renueva sola en segundos y en tu panel aparece "Pago recibido".
+
+6. Cuando Wompi apruebe tu comercio: cambia las tres variables por las de PRODUCCIÓN
+   (pub_prod_..., prod_integrity_..., prod_events_...) y configura la URL de eventos de producción.
+   Desde ese momento los pagos son reales.
+
+Precios actuales por caja: 1 mes $49.900 · 1 año $499.000 · caja adicional +$16.900/mes o +$169.000/año.
